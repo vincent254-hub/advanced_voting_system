@@ -85,27 +85,27 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
           </a>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-share"></i>
+        <!-- Expose all links in the navbar -->
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="candidates.php">
+            <i class="bi bi-person"></i> Manage Candidates
           </a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              Important Links
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a href="candidates.php"><h4>Manage Candidates</h4></a></li>
-            <li><a href="refresh.php"><h4>Poll Results</h4></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a href="positions.php"><h4>Manage Positions</h4></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a href="manage-admins.php"><h4>Admin Profile</h4></a></li>
-          </ul>
         </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="refresh.php">
+            <i class="bi bi-bar-chart"></i> Poll Results
+          </a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="positions.php">
+            <i class="bi bi-briefcase"></i> Manage Positions
+          </a>
+        </li>
+        
 
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/admin-avatar.png" alt="Profile" class="rounded-circle">
+            
             <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo "$firstName $lastName"; ?></span>
           </a>
 
@@ -131,6 +131,7 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
 
   <!-- Include any additional scripts needed -->
   <?php include('include/scripts.php'); ?>
+
 </body>
 
 </html>

@@ -75,7 +75,7 @@
         <div class="col-md-12 my-1" id="live-results-sidebar">
           <div class="container">
             <div class="card-body">
-              <p class="card-title text-center">Live Results from all positions</p>
+              <p class="card-title text-center text-muted">Live Results from all positions</p>
               <div id="live-results-content">
                 <!-- Live results will be displayed here -->
               </div>
