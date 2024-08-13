@@ -1,0 +1,9 @@
+Create a database called "poll"
+
+then inside the db file import poll.sql
+
+below are creds
+
+URL: localhost/online_voting/admin
+USER NAME: admin@example.com
+PASSWORD: admin
