@@ -3,10 +3,10 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>Online Voting System</span></strong>. All Rights Reserved
+      &copy; HTVC <strong><span>Online Voting System</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      Created by <a href="github.com/vincent254-hub">Vincent</a>
+    Product done by <a href="https://www.github.com/vincent254-hub">Phoeni<span>X</span></a>
     </div>
   </footer><!-- End Footer -->
 

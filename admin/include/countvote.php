@@ -10,9 +10,13 @@ if (empty($_SESSION['admin_id'])) {
     exit();
 }
 
+
+
+
 $candidates = [];
 $total_votes = 0;
 $error_message = '';
+
 
 if (isset($_POST['Submit'])) {
     $position = addslashes($_POST['position']);

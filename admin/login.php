@@ -26,6 +26,8 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <!-- <script language="JavaScript" src="js/admin.js"></script> -->
@@ -44,9 +46,9 @@
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
               <div class="d-flex justify-content-center py-4">
-                <a href="index.php" class="logo d-flex align-items-center w-auto">
+                <a href="../index.php" class="logo d-flex align-items-center w-auto">
                   <!-- <img src="assets/img/logo.png" alt=""> -->
-                  <span class="d-none d-lg-block text-center">Online Voting System Admin Login</span>
+                  <span class="d-none d-lg-block text-center">OVS Admin Login</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -90,7 +92,7 @@
 
               <div class="credits">
                 
-                Created by <a href="github.com/vincent254-hub">Vincent</a>
+                Product done by <a href="https://www.github.com/vincent254-hub">Phoeni<span>X</span></a>
               </div>
 
             </div>
@@ -104,6 +106,9 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -116,6 +121,23 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('logout') && urlParams.get('logout') === 'success') {
+        Swal.fire({
+          title: 'Logged Out!',
+          text: 'You have been successfully logged out. Thank you for using OVS!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          // Optional: Redirect to the login page again after the alert is closed
+          window.location.href = 'login.php';
+        });
+      }
+    });
+  </script>
 
 </body>
 

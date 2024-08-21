@@ -20,6 +20,9 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <link href="assets/css/main.css" rel="stylesheet">
   <!-- <link href="./style.css" rel="stylesheet"> -->
   <!-- <link href="css/user_styles.css" rel="stylesheet" type="text/css" /> -->

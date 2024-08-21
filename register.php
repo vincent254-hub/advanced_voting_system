@@ -39,21 +39,34 @@
   require_once('connection.php');
   
   if (isset($_POST['submit'])) {
+        $myFirstName = addslashes($_POST['firstname']);
+        $myLastName = addslashes($_POST['lastname']);
+        $myEmail = $_POST['email'];
+        $admno = $_POST['admno'];
+        $myPassword = $_POST['password'];
 
-    $myFirstName = addslashes($_POST['firstname']);
-    $myLastName = addslashes($_POST['lastname']);
-    $myEmail = $_POST['email'];
-    $admno = $_POST['admno'];
-    $myPassword = $_POST['password'];
+        $newpass = md5($myPassword);
 
-    $newpass = md5($myPassword);
+        // Check if email or admno already exists
+        $emailCheck = mysqli_query($conn, "SELECT * FROM userstable WHERE email='$myEmail'");
+        $admnoCheck = mysqli_query($conn, "SELECT * FROM userstable WHERE admno='$admno'");
 
-    $sql = mysqli_query($conn, "INSERT INTO userstable(first_name, last_name, email, admno,password) 
-                VALUES ('$myFirstName','$myLastName', '$myEmail', '$admno', '$newpass') ");
-
-    die("<div class='container row col-lg-12 text-center'>
-    <p class='text-center'>Congrats, You have successfully registered for an account on OVS.</p><br><p clas='text-center'>Click Here </p><a href=\"login.php\">Login</a></div>");
-  } ?>
+        if (mysqli_num_rows($emailCheck) > 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Email is already registered. Please try another.']);
+            exit;
+        } elseif (mysqli_num_rows($admnoCheck) > 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Admission number is already registered. Please try another.']);
+            exit;
+        } else {
+            // Insert user into database
+            $sql = mysqli_query($conn, "INSERT INTO userstable(first_name, last_name, email, admno, password) 
+                    VALUES ('$myFirstName','$myLastName', '$myEmail', '$admno', '$newpass')");
+            echo json_encode(['status' => 'success', 'message' => 'Congrats, You have successfully registered for an account on OVS.']);
+            header("Location: login.php");
+            exit;
+        }
+    }
+ ?>
 
   <main>
     <div class="container">
@@ -89,19 +102,17 @@
                         </div>
 
                         <div class="row d-flex my-3">
-                          <div class="col-7 ">
+                        <div class="col-7">
                             <label for="yourEmail" class="form-label">Your Email</label>
                             <input type='email' class='form-control' name='email' maxlength='100' id='email' value='' required>
-                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
-                          </div>
+                            <div class="invalid-feedback">Please enter a valid Email address!</div>
+                        </div>
 
-                          <div class="col-5">
+                        <div class="col-5">
                             <label for="yourAdmn" class="form-label">SRN</label>
-                            <div class="input-group has-validation">                        
-                              <input type="text" name="admno" class="form-control" id="yourAdmno" value='' placeholder="HDIS069-22" required>
-                              <div class="invalid-feedback">Please enter a valid SRN number.</div>
-                            </div>
-                          </div>
+                            <input type="text" name="admno" class="form-control" id="admno" value='' placeholder="HDIS069-22" required>
+                            <div class="invalid-feedback">Please enter a valid SRN number.</div>
+                        </div>
                         </div>
 
                         <div class="row d-flex my-3">
@@ -155,32 +166,44 @@
 
   <!-- Template Main JS File -->
   <script src="assets1/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
   <script>
     $(document).ready(function() {
-
-      $('#email').blur(function(event) {
-
+    $('#email, #admno').blur(function(event) {
         event.preventDefault();
+        
         var emailId = $('#email').val();
-        $.ajax({
-          url: 'checkuser.php',
-          method: 'post',
-          data: {
-            email: emailId
-          },
-          dataType: 'html',
-          success: function(message) {
-            $('#result').html(message);
-          }
-        });
+        var admnoId = $('#admno').val();
 
-
-
-      });
-
+        if (emailId !== "" || admnoId !== "") {
+            $.ajax({
+                url: 'checkuser.php',
+                method: 'post',
+                data: {
+                    email: emailId,
+                    admno: admnoId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'error') {
+                        $('#result').html(response.message);
+                        $('input[type="submit"]').prop('disabled', true);
+                    } else {
+                        $('#result').html('');
+                        $('input[type="submit"]').prop('disabled', false);
+                    }
+                }
+            });
+        }
     });
+});
+
+
+
   </script>
+
 
 </body>
 

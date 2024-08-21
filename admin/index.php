@@ -3,6 +3,7 @@
 
 <head>
   <?php include('include/header.php') ?>
+  <script language="JavaScript" src="js/admin.js"></script>
   <style>
     .progress-bar-container {
       margin-bottom: 15px;
@@ -61,9 +62,6 @@
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <?php include('include/topbar.php') ?>
-
   <aside id="live-results-sidebar" class="sidebar">
     <ul class="sidebar-nav" id="">
       <li class="nav-item">
@@ -103,7 +101,7 @@
       <div class="row">
 
         <!-- Important Links Card -->
-        <div class="col-xxl-4 col-md-8">
+        <div class="col-xxl-3 col-md-3">
           <div class="card info-card">
             <div class="card-body">
               <h5 class="card-title">Important <span>| Links</span></h5>
@@ -121,7 +119,7 @@
         </div><!-- End Important Links Card -->
 
         <!-- Votes Results Card -->
-        <div class="col-xxl-4 col-md-4">
+        <div class="col-xxl-3 col-md-3">
           <div class="card info-card">
             <div class="card-body">
               <h5 class="card-title">Votes <span>| Results</span></h5>
@@ -130,10 +128,9 @@
                   <i class="bi bi-person-check"></i>
                 </div>
                 <div class="ps-3">
-                  <p class="m-1">Votes Count</p>
-                  <div class="container">
-                    <?php include('include/countfile.php') ?>
-                    <h3><?php echo($totalvotes) ?></h3>
+                  <p class="m-1 text-center">Voters Count</p>
+                  <div class="">                    
+                    <?php echo($totalVotes); ?>
                   </div>
                   <span class="text-success small pt-1 fw-bold">8%</span> 
                   <span class="text-muted small pt-2 ps-1">increase</span>
@@ -144,7 +141,7 @@
         </div><!-- End Votes Results Card -->
 
         <!-- HTVC Comrades Decide Card -->
-        <div class="col-xxl-4 col-xl-12">
+        <div class="col-xxl-6 col-md-6">
           <div class="card info-card">
             <div class="card-body">
               <h5 class="card-title"><span>| HTVC Comrades Decide</span></h5>
@@ -154,8 +151,21 @@
                 </div>
                 <div class="ps-3">
                   <h6><?php echo(date('Y')) ?></h6>
-                  <span class="text-danger small pt-1 fw-bold">100%</span> 
+                  <span class="text-danger small pt-1 fw-bold"><?php echo number_format($voterTurnout, 2)?> %</span> 
                   <span class="text-muted small pt-2 ps-1">Turnout</span>
+                </div>
+                
+                <div class="ps-3">
+                  <h6><?php echo($totalPositions) ?></h6>                   
+                  <span class="text-muted small pt-2 ps-1">Positions</span>
+                </div>
+                <div class="ps-3">
+                  <h6><?php echo($totalCandidates) ?></h6>                   
+                  <span class="text-muted small pt-2 ps-1">Candidates</span>
+                </div>
+                <div class="ps-3">
+                  <h6><?php echo($totalVoters) ?></h6>                   
+                  <span class="text-muted small pt-2 ps-1">Voters</span>
                 </div>
               </div>
             </div>
@@ -167,12 +177,27 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Updates <span>/Today</span></h5>
-              <div id="reportsChart"></div>
-              <?php include('refresh.php') ?>
+              <div id=""></div>
+              <?php include('async_results.php') ?>
             </div>
           </div>
         </div><!-- End Updates Section -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bulk User Registration</h5>
+                    <form action="bulk_register.php" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="csvFile" class="form-label">Upload CSV File</label>
+                            <input type="file" name="csv_file" id="csvFile" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Upload and Register Users</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
+        
       </div>
     </section>
 
@@ -202,87 +227,80 @@
 
   <!-- Script for fetching and displaying live results -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let currentSectionIndex = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentSectionIndex = 0;
 
-      function renderLiveResults(data) {
-        const liveResultsContent = document.getElementById('live-results-content');
-        const toast = document.getElementById('live-results-toast');
-        liveResultsContent.innerHTML = '';
+            function renderLiveResults(data) {
+                const liveResultsContent = document.getElementById('live-results-content');
+                liveResultsContent.innerHTML = '';
 
-        const sections = [];
-        for (const position in data) {
-          if (data.hasOwnProperty(position)) {
-            const section = document.createElement('div');
-            section.className = 'progress-bar-container';
+                const sections = [];
+                for (const position in data) {
+                    if (data.hasOwnProperty(position)) {
+                        const section = document.createElement('div');
+                        section.className = 'progress-bar-container';
 
-            const positionHeader = document.createElement('h6');
-            positionHeader.textContent = position.replace(/_/g, ' ');
-            section.appendChild(positionHeader);
+                        const positionHeader = document.createElement('h6');
+                        positionHeader.textContent = position.replace(/_/g, ' ');
+                        section.appendChild(positionHeader);
 
-            data[position].forEach(candidate => {
-              const candidateName = document.createElement('span');
-              candidateName.textContent = candidate.candidate_name + ': ' + candidate.votes + ' votes';
-              section.appendChild(candidateName);
+                        data[position].forEach(candidate => {
+                            const votePercentage = candidate.candidate_votes ? candidate.candidate_votes : 0;
+                            const candidateName = document.createElement('span');
+                            candidateName.textContent = candidate.candidate_name + ': ' + candidate.vote_count + ' Votes';
+                            section.appendChild(candidateName);
 
-              const progress = document.createElement('div');
-              progress.className = 'progress';
-              const progressBar = document.createElement('div');
-              progressBar.className = 'progress-bar';
-              progressBar.style.width = candidate.votes + '%';
-              progressBar.setAttribute('aria-valuenow', candidate.votes);
-              progressBar.setAttribute('aria-valuemin', '0');
-              progressBar.setAttribute('aria-valuemax', '100');
-              progressBar.textContent = candidate.votes + '%';
+                            const progress = document.createElement('div');
+                            progress.className = 'progress';
+                            const progressBar = document.createElement('div');
+                            progressBar.className = 'progress-bar';
+                            progressBar.style.width = votePercentage + '%';
+                            progressBar.setAttribute('aria-valuenow', votePercentage);
+                            progressBar.setAttribute('aria-valuemin', '0');
+                            progressBar.setAttribute('aria-valuemax', '100');
+                            progressBar.textContent = votePercentage.toFixed(2) + '%';
 
-              progress.appendChild(progressBar);
-              section.appendChild(progress);
-            });
+                            if (votePercentage < 50) {
+                                progressBar.style.backgroundColor = 'red';
+                            }else if (votePercentage>=50 && votePercentage < 75){
 
-            sections.push(section);
-          }
-        }
+                                progressBar.style.backgroundColor = 'gold';
+                            }else if (votePercentage>= 75){
+                                progressBar.style.backgroundColor = 'green';
+                            }
 
-        if (window.innerWidth <= 576) { // Mobile view
-          toast.innerHTML = '';
-          sections.forEach((section) => {
-            toast.appendChild(section.cloneNode(true)); // Use clone to avoid DOM issues
-          });
-          toast.classList.add('show');
-        } else { // Desktop view
-          sections.forEach((section, index) => {
-            section.style.display = (index === currentSectionIndex) ? 'block' : 'none';
-            liveResultsContent.appendChild(section);
-          });
+                            progress.appendChild(progressBar);
+                            section.appendChild(progress);
+                        });
 
-          currentSectionIndex = (currentSectionIndex + 1) % sections.length;
-        }
-      }
+                        sections.push(section);
+                    }
+                }
 
-      function fetchLiveResults() {
-        fetch('fetch_live_results.php')
-          .then(response => response.json())
-          .then(data => renderLiveResults(data))
-          .catch(error => console.error('Error fetching live results:', error));
-      }
+                sections.forEach((section, index) => {
+                    section.style.display = (index === currentSectionIndex) ? 'block' : 'none';
+                    liveResultsContent.appendChild(section);
+                });
 
-      fetchLiveResults();
-      setInterval(fetchLiveResults, 10000); // Refresh every 10 seconds
+                currentSectionIndex = (currentSectionIndex + 1) % sections.length;
+            }
 
-      window.addEventListener('resize', () => {
-        if (window.innerWidth <= 576) {
-          document.getElementById('live-results-sidebar').style.display = 'none';
-        } else {
-          document.getElementById('live-results-sidebar').style.display = 'block';
-        }
-      });
-    });
-  </script>
+            function fetchLiveResults() {
+                fetch('fetch_live_results.php')
+                    .then(response => response.json())
+                    .then(data => renderLiveResults(data))
+                    .catch(error => console.error('Error fetching live results:', error));
+            }
+
+            fetchLiveResults();
+            setInterval(fetchLiveResults, 10000); // Refresh every 10 seconds
+        });
+    </script>
 
   <!-- Toast HTML for mobile view -->
-  <div id="live-results-toast" class="toast">
+  <!-- <div id="live-results-toast" class="toast">
     
-  </div>
+  </div> -->
 
 </body>
 

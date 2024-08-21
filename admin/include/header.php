@@ -8,6 +8,30 @@ if(empty($_SESSION['admin_id'])){
     exit();
 }
 
+// voters and turnout
+
+$totalVotersQuery = "SELECT COUNT(*) as totalVoters FROM userstable";
+// $votedQuery = "SELECT COUNT(*) as totalVoted FROM votestable";
+$candidateQuery = "SELECT COUNT(*) as totalCandidates FROM candidatestable";
+$positionQuery = "SELECT COUNT(*) as totalPositions FROM positionstable";
+$voteQuery = "SELECT COUNT(DISTINCT voter_id) AS totalVotes FROM votestable";
+
+$totalVotersResult = mysqli_query($conn, $totalVotersQuery);
+// $totalVotedResult = mysqli_query($conn, $votedQuery);
+$totalCandidateResult = mysqli_query($conn, $candidateQuery);
+$totalPositionResult = mysqli_query($conn, $positionQuery);
+$totalVotesResult = mysqli_query($conn, $voteQuery);
+
+$totalVoters = mysqli_fetch_assoc($totalVotersResult)['totalVoters'];
+// $totalVoted = mysqli_fetch_assoc($totalVotedResult)['totalVoted'];
+$totalCandidates = mysqli_fetch_assoc($totalCandidateResult)['totalCandidates'];
+$totalPositions = mysqli_fetch_assoc($totalPositionResult)['totalPositions'];
+$totalVotes = mysqli_fetch_assoc($totalVotesResult)['totalVotes'];
+
+$voterTurnout = ($totalVotes / $totalVoters) * 100;
+
+
+
 // Retrieve admin details
 $result = mysqli_query($conn, "SELECT * FROM administratortable WHERE admin_id = '$_SESSION[admin_id]'");
 $row = mysqli_fetch_array($result);

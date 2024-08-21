@@ -6,7 +6,7 @@
   <script language="JavaScript" src="js/admin.js"></script>
 </head>
 <body>
-  <section class="section">
+  <section class="section container mt-5">
   
     <?php include('include/countvote.php') ?>
 
