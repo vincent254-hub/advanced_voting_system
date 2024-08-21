@@ -185,16 +185,35 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Bulk User Registration</h5>
+                    <h5 class="card-title">Bulk Voter Registration</h5>
                     <form action="bulk_register.php" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="csvFile" class="form-label">Upload CSV File</label>
                             <input type="file" name="csv_file" id="csvFile" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-warning">Upload and Register Users</button>
+                        <button type="submit" class="btn btn-warning">Register Voters</button>
                     </form>
                 </div>
             </div>
+        </div>
+      <!-- votimg time configuration -->
+        <div class="col-md-6">          
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Voting Time Configuration</h5>
+              <form action="set_voting_time.php" method="post">
+                <div class="mb-3">
+                  <label for="votingStartTime" class="form-label">Voting Start Time</label>
+                  <input type="datetime-local" name="start_time" id="votingStartTime" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label for="votingEndTime" class="form-label">Voting End Time</label>
+                  <input type="datetime-local" name="end_time" id="votingEndTime" class="form-control" required>
+                </div>
+                <button type="submit" name="submit" class="btn btn-warning">Set Voting Time</button>
+              </form>
+            </div>
+          </div>
         </div>
 
         

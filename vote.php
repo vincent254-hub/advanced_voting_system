@@ -1,6 +1,10 @@
 <?php
 require('connection.php');
+
+require_once('check_voting_time.php');
+
 session_start();
+
 
 if (empty($_SESSION['member_id'])) {
     header("location:access-denied.php");
@@ -16,6 +20,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
     
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
         .candidate-card {
@@ -272,8 +277,11 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 
             fetchLiveResults();
             setInterval(fetchLiveResults, 10000); // Refresh every 10 seconds
+
+           
         });
     </script>
+    
 </body>
 
 </html>
