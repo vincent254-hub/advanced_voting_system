@@ -29,6 +29,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script language="JavaScript" src="js/user.js"></script>
   
+  
   <script>
      // JavaScript to check every minute if voting is still open
      setInterval(function() {
@@ -41,10 +42,10 @@
                             text: 'Voting has ended. You can no longer cast your vote.',
                             icon: 'error'
                         }).then(function() {
-                            window.location = 'index.php';
+                            window.location = 'voter_dashboard.php';
                         });
                     }
                 }
             });
-        }, 60000); // Check every 60 seconds
+        }, 300000); // Check every 60 seconds
   </script>

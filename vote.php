@@ -1,7 +1,9 @@
+
 <?php
+// require_once('check_voting_time.php');
 require('connection.php');
 
-require_once('check_voting_time.php');
+// require_once('check_voting_time.php');
 
 session_start();
 
@@ -9,6 +11,7 @@ session_start();
 if (empty($_SESSION['member_id'])) {
     header("location:access-denied.php");
 }
+
 
 $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 ?>
@@ -94,7 +97,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
             <?php @include('include/nav.php') ?>
         </div>
     
-
+       <?php include('check_voting_time.php'); ?>
     <div class="container my-5 pt-4" id="page">
         <div class="container">
             <h1>Active Polls</h1>
@@ -102,7 +105,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
         <div class="refresh container my-4"></div>
         <div class="row">
             <div class="container">
-                <div class="col-md-12">
+                <div class="col-md-6">
 
                     <div class="container input-card" id="container">
                         <div class="container">
@@ -130,7 +133,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <marquee width="100%" behavior="alternate"><h3 style="text-align:center">Live Results</h3></marquee>
+                        <marquee class="container" width="100%" behavior="alternate"><h3 style="text-align:center">Live Results</h3></marquee>
                         <div class="card mx-auto items-center mb-5 p-5 live-card">
                             <div class="" id="live-results-content">
                                 <!-- live reslts streaming -->

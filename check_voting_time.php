@@ -15,7 +15,7 @@ if (!$conn) {
 $current_time = new DateTime();
 
 // Fetch the voting start and end times from the database
-$sql = "SELECT * FROM voting_time WHERE id = 3";
+$sql = "SELECT * FROM voting_time WHERE id=3";
 $result = mysqli_query($conn, $sql);
 
 // Check if the query was successful
@@ -32,15 +32,15 @@ if ($voting_time) {
 
     // Check if the current time is outside of the voting period
     if ($current_time < $start_time || $current_time > $end_time) {
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11' />";
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
         echo "<script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
-                    title: 'Voting time set!',
-                    text: 'Voting hours have been updated successfully.',
-                    icon: 'success'
+                    title: 'Voting Closed',
+                    text: 'Voting is currently closed. Please try again during the voting hours.',
+                    icon: 'error'
                 }).then(function() {
-                    window.location = 'vote.php';
+                    window.location = 'voter_dashboard.php';
                 });
             });
         </script>";
@@ -52,7 +52,7 @@ if ($voting_time) {
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 title: 'Error!',
-                text: 'Failed to fetch voting time from the database.',
+                text: 'Voting Season not Available. Please try again during voting hours',
                 icon: 'error'
             }).then(function() {
                 window.location = 'index.php';
@@ -61,4 +61,3 @@ if ($voting_time) {
     </script>";
     exit();
 }
-?>

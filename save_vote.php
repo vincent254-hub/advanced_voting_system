@@ -3,6 +3,7 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 require('connection.php');
 
+
 $vote = $_REQUEST['vote'];
 $user_id = $_REQUEST['user_id'];
 $position = $_REQUEST['position'];
@@ -30,5 +31,6 @@ if (mysqli_num_rows($sql) > 0) {
 
 mysqli_close($conn);
 ?>
+
 
 
