@@ -1,28 +1,14 @@
 <?php
 session_start();
 require('../connection.php');
-?>
-<html><head>
-<link href="css/admin_styles.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="js/admin.js">
-</script>
-</head><body bgcolor="tan">
-<center><a href ="https://sourceforge.net/projects/pollingsystem/"><img src = "images/logo" alt="site logo"></a></center><br>     
-<center><b><font color = "brown" size="6">Simple PHP Polling System</font></b></center><br><br>
-<div id="page">
-<div id="header">
-<h1>MANAGE ADMINISTRATORS </h1>
-<a href="admin.php">Home</a> | <a href="positions.php">Manage Positions</a> | <a href="candidates.php">Manage Candidates</a> | <a href="refresh.php">Poll Results</a> | <a href="manage-admins.php">Manage Account</a> | <a href="change-pass.php">Change Password</a>  | <a href="logout.php">Logout</a>
-</div>
-<div id="container">
-<?php
+
 
 if(empty($_SESSION['admin_id'])){
  header("location:access-denied.php");
 }
 
 //fetch data for update file
-$result=mysqli_query($con, "SELECT * FROM administratortable WHERE admin_id = '$_SESSION[admin_id]'");
+$result=mysqli_query($conn, "SELECT * FROM administratortable WHERE admin_id = '$_SESSION[admin_id]'");
 if (mysqli_num_rows($result)<1){
     $result = null;
 }

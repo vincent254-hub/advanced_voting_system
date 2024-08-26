@@ -7,13 +7,24 @@ require('connection.php');
 session_start();
 
 
-if (empty($_SESSION['member_id'])) {
-    header("location:access-denied.php");
-}
+    if (empty($_SESSION['member_id'])) {
+        header("location:access-denied.php");
+    }
 
 
 $positions = mysqli_query($conn, "SELECT * FROM positionstable");
+
+    // Fetch the active voting period from the database
+    $sql = "SELECT end_time FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    $end_time = null;
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $end_time = $row['end_time'];
+    }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -49,7 +60,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
   <script language="JavaScript" src="js/user.js"></script>
   
   
-            <?php @include('include/header.php') ?>
+<?php @include('include/header.php') ?>
         
 </head>
 
@@ -75,24 +86,51 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                         <div class="card my-3 py-5 px-5" id="live-results-content"> 
                                 <!-- live results -->
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer">                        
                            <?php echo (date('Y'));?> Heroes TVC Decides
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
-                <h2 class="text-center" style="font-weight:bold">Winners</h2>                    
-                       
-                            <div class="container my-3 py-5 px-5" id="live-results-winners">
+                <h2 class="text-center my-4" style="font-weight:bold">Winners</h2>                       
+                            <div class="card my-2 py-3 px-1" id="live-results-winners" style="background-color:#fffccc;">
                                 <!-- Live results will be rendered here -->
                             </div>
                        
                     </div>
                 </div>
-                
+                                
             </div>
+            
         </div>
-
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">                    
+                        <p class="text-center" style="font-weight:bold; font-size:20px;">Voting Timer Update</p>                    
+                    <div class="card-body">
+                        <p class="text-center" style="font-weight:bold; font-size:20px;" id="countdown-timer"></p>
+                    </div> 
+                </div>                   
+            </div>
+            <div class="col-md-4">
+                <div class="card info-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Important <span>| Links</span></h5>
+                                <ul class="list-unstyled">
+                                    <li><a class="dropdown-item" href="voter_dashboard.php">Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="manage-profile.php">Voter Profile</a></li>
+                                    <li><a class="dropdown-item" href="vote.php">Cast Vote</a></li>
+                                    <li><a class="dropdown-item" href="refresh.php">Tally Results</a></li>
+                                    <?php if (!empty($_SESSION['member_id'])) { echo '<li><a href="logout.php">Logout</a></li>'; } ?>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+        </div>
+    </div>
       </section>
 
     </div>
@@ -188,47 +226,109 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
         
         // fetching winners
         document.addEventListener('DOMContentLoaded', function() {
-        function fetchWinners() {
-            fetch('fetch_winners.php')
-                .then(response => response.json())
-                .then(data => renderWinners(data))
-                .catch(error => console.error('Error fetching winners:', error));
-        }
+    function fetchWinners() {
+        fetch('fetch_winners.php')
+            .then(response => response.json())
+            .then(data => renderWinners(data))
+            .catch(error => console.error('Error fetching winners:', error));
+    }
 
-        function renderWinners(winners) {
-            const resultsContainer = document.getElementById('live-results-winners');
-            resultsContainer.innerHTML = ''; // Clear previous results
+    function renderWinners(winners) {
+        const resultsContainer = document.getElementById('live-results-winners');
+        resultsContainer.innerHTML = ''; // Clear previous results
 
-            let row;
-            let count = 0;
+        // Create a single canvas element for the combined chart
+        const canvas = document.createElement('canvas');
+        canvas.id = 'combined-chart';
+        resultsContainer.appendChild(canvas);
 
-            for (const position in winners) {
-                if (winners.hasOwnProperty(position)) {
-                    // Create a new row for every 3 cards
-                    if (count % 2 === 0) {
-                        row = document.createElement('div');
-                        row.className = 'row';
-                        resultsContainer.appendChild(row);
-                    }
+        const ctx = canvas.getContext('2d');
 
-                    const winnerCard = document.createElement('div');
-                    winnerCard.className = 'col-md-6 card winner-card my-2 p-3';
+        // Prepare the data for the combined bar chart
+        const positions = [];
+        const candidateNames = [];
+        const voteCounts = [];
 
-                    winnerCard.innerHTML = `
-                        <h4>${position.replace(/_/g, ' ')} Winner</h4>
-                        <p><strong>${winners[position].candidateName}</strong></p>
-                        <p>Votes: ${winners[position].vote_count}</p>
-                    `;
-
-                    row.appendChild(winnerCard);
-                    count++;
-                }
+        for (const position in winners) {
+            if (winners.hasOwnProperty(position)) {
+                positions.push(position.replace(/_/g, ' '));
+                candidateNames.push(winners[position].candidateName);
+                voteCounts.push(winners[position].vote_count);
             }
         }
 
-        fetchWinners();
-        setInterval(fetchWinners, 10000); // Refresh every 10 seconds
-});
+        // Generate a combined bar chart
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: positions,
+                datasets: [{
+                    label: 'Vote Count',
+                    data: voteCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0 // Ensure no decimal points for vote count
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${candidateNames[context.dataIndex]}: ${context.raw} votes`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    fetchWinners();
+    setInterval(fetchWinners, 10000); // Refresh every 10 seconds
+    });
+
+            // countdown timer
+
+            document.addEventListener('DOMContentLoaded', function() {
+            // Get the end time from the PHP variable
+            const endTime = new Date('<?php echo $end_time; ?>').getTime();
+            const timerElement = document.getElementById('countdown-timer');
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const timeLeft = endTime - now;
+
+                    // Calculate days, hours, minutes, and seconds left
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    // Display the countdown timer
+                    if (timeLeft > 0) {
+                        timerElement.textContent = `Voting ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    } else {
+                        timerElement.textContent = 'Voting period has ended ';
+                        clearInterval(countdownInterval);
+                    }
+                }
+
+                // Update the countdown every second
+                const countdownInterval = setInterval(updateCountdown, 1000);
+                updateCountdown(); // Initial call to display the countdown immediately
+            });
 
 
     

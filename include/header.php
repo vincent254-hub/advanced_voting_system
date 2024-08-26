@@ -1,3 +1,4 @@
+
 <title>Online Voting System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
@@ -31,21 +32,31 @@
   
   
   <script>
-     // JavaScript to check every minute if voting is still open
-     setInterval(function() {
-            $.ajax({
-                url: 'check_voting_time.php',
-                success: function(response) {
-                    if (response.includes('Voting Closed')) {
-                        Swal.fire({
-                            title: 'Voting Closed',
-                            text: 'Voting has ended. You can no longer cast your vote.',
-                            icon: 'error'
-                        }).then(function() {
-                            window.location = 'voter_dashboard.php';
-                        });
-                    }
-                }
-            });
-        }, 300000); // Check every 60 seconds
-  </script>
+    // JavaScript to check every 30 seconds if voting is still open
+    setInterval(function() {
+        $.ajax({
+            url: 'check_voting_time.php',
+            success: function(response) {
+                if (response.includes('Voting Session Closed')) {
+                    Swal.fire({
+                        title: 'Voting Closed',
+                        text: 'Voting has ended. You can no longer cast your vote.',
+                        icon: 'error'
+                    }).then(function() {
+                        window.location = 'voter_dashboard.php';
+                    });
+                } else if (response.includes('Voting is Active')) {
+                    // Voting is still active, allow user actions or updates as needed
+                    console.log('Voting is still active');
+                } 
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Unable to check the voting status. Please try again later.',
+                    icon: 'error'
+                });
+            }
+        });
+    }, 30000); // Check every 30 seconds
+</script>

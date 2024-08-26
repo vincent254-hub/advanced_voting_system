@@ -8,6 +8,17 @@ if(empty($_SESSION['admin_id'])){
     exit();
 }
 
+// timer
+// Fetch the active voting period from the database
+$sql = "SELECT end_time FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn, $sql);
+$end_time = null;
+
+if ($result && mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $end_time = $row['end_time'];
+}
+
 // voters and turnout
 
 $totalVotersQuery = "SELECT COUNT(*) as totalVoters FROM userstable";
@@ -30,8 +41,7 @@ $totalVotes = mysqli_fetch_assoc($totalVotesResult)['totalVotes'];
 
 $voterTurnout = ($totalVotes / $totalVoters) * 100;
 
-
-
+$baseUrl = "https://9bc0-197-237-178-181.ngrok-free.app";
 // Retrieve admin details
 $result = mysqli_query($conn, "SELECT * FROM administratortable WHERE admin_id = '$_SESSION[admin_id]'");
 $row = mysqli_fetch_array($result);

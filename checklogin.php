@@ -24,10 +24,12 @@ require('connection.php');
 $myusername = $_POST['myusername'];
 $mypassword = $_POST['mypassword'];
 
-$encrypted_mypassword = md5($mypassword); 
 $myusername = stripslashes($myusername);
+$encrypted_mypassword = md5($mypassword);
+// $mypassword = stripslashes($mypassword);
 
-$sql = mysqli_query($conn, "SELECT * FROM userstable WHERE email='$myusername' and password='$encrypted_mypassword'");
+// Search for the user using either email or admission number
+$sql = mysqli_query($conn, "SELECT * FROM userstable WHERE (email='$myusername' OR admno='$myusername') AND password='$encrypted_mypassword'");
 $count = mysqli_num_rows($sql);
 
 if ($count == 1) {

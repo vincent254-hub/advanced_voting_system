@@ -2,6 +2,7 @@
 <?php
 // require_once('check_voting_time.php');
 require('connection.php');
+             
 
 // require_once('check_voting_time.php');
 
@@ -13,7 +14,19 @@ if (empty($_SESSION['member_id'])) {
 }
 
 
+
 $positions = mysqli_query($conn, "SELECT * FROM positionstable");
+
+// Fetch the active voting period from the database
+$sql = "SELECT end_time FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn, $sql);
+$end_time = null;
+
+if ($result && mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $end_time = $row['end_time'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -99,10 +112,22 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
     
        <?php include('check_voting_time.php'); ?>
     <div class="container my-5 pt-4" id="page">
-        <div class="container">
-            <h1>Active Polls</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="container">
+                    <h1>Active Polls</h1>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- <div class="card">                    
+                        <p class="text-center" style="font-weight:bold; font-size:20px;">Voting Timer Update</p>                    
+                    <div class="card-body">
+                        <p class="text-center" style="font-weight:bold; font-size:20px;" id="countdown-timer"></p>
+                    </div> 
+                </div>    -->
+            </div>
+                
         </div>
-        <div class="refresh container my-4"></div>
         <div class="row">
             <div class="container">
                 <div class="col-md-6">
@@ -124,6 +149,8 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                         </div>
                     </div>
                 </div>
+                
+        </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="container">
@@ -143,8 +170,8 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                 </div>
             </div>
 
-            <center><span id="error"></span></center>
-        </div>
+        <center><span id="error"></span></center>
+        
     </div>
     <div class="col-md-12">
         <footer id="footer" class="footer">
@@ -280,9 +307,45 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 
             fetchLiveResults();
             setInterval(fetchLiveResults, 10000); // Refresh every 10 seconds
-
            
         });
+
+        
+
+    </script>
+
+    <script>
+        // countdown timer
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the end time from the PHP variable
+            const endTime = new Date('<?php echo $end_time; ?>').getTime();
+            const timerElement = document.getElementById('countdown-timer');
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const timeLeft = endTime - now;
+
+                    // Calculate days, hours, minutes, and seconds left
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    // Display the countdown timer
+                    if (timeLeft > 0) {
+                        timerElement.textContent = `Voting ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    } else {
+                        timerElement.textContent = 'Voting period has ended ';
+                        clearInterval(countdownInterval);
+                    }
+                }
+
+                // Update the countdown every second
+                const countdownInterval = setInterval(updateCountdown, 1000);
+                updateCountdown(); // Initial call to display the countdown immediately
+            });
+
     </script>
     
 </body>

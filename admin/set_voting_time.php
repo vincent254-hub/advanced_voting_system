@@ -11,19 +11,14 @@ if (isset($_POST['submit'])) {
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
 
-    // Validate that both start_time and end_time are set
     if (!empty($start_time) && !empty($end_time)) {
-        // Check if there's already a voting time record
-        $check_sql = "SELECT id FROM voting_time WHERE id = 1";
-        $result = mysqli_query($conn, $check_sql);
+        // Deactivate any previously active voting periods
+        $deactivate_sql = "UPDATE voting_time SET status = 0 WHERE status = 1";
+        mysqli_query($conn, $deactivate_sql);
 
-        if (mysqli_num_rows($result) > 0) {
-            // If the record exists, update it
-            $stmt = $conn->prepare("UPDATE voting_time SET start_time = ?, end_time = ? WHERE id = 1");
-        } else {
-            // If no record exists, insert a new one
-            $stmt = $conn->prepare("INSERT INTO voting_time (start_time, end_time) VALUES (?, ?)");
-        }
+        // Insert or update the voting time record
+        $stmt = $conn->prepare("INSERT INTO voting_time (start_time, end_time, status) VALUES (?, ?, 1)
+                                ON DUPLICATE KEY UPDATE start_time = VALUES(start_time), end_time = VALUES(end_time), status = 1");
 
         $stmt->bind_param("ss", $start_time, $end_time);
 
@@ -41,13 +36,12 @@ if (isset($_POST['submit'])) {
                 });
             </script>";
         } else {
-            // Output SQL error if the query fails
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
             echo "<script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
                         title: 'Error!',
-                        text: 'Failed to update voting hours. Please try again. SQL Error: " . $stmt->error . "',
+                        text: 'Failed to update voting hours. Please try again.',
                         icon: 'error'
                     });
                 });
@@ -68,6 +62,7 @@ if (isset($_POST['submit'])) {
         </script>";
     }
 }
+
 
 // Close the database connection
 $conn->close();

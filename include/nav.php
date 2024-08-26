@@ -14,11 +14,18 @@
       <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
         <ul>
           <li><a href="index.php">Home</a></li>
-          <li><a href="register.php">Register</a></li>
-          <li><a href="vote.php">Polls</a></li>
+          
+        <?php
+          if(!empty($_SESSION['member_id'])){  
+           echo'<li><a href="vote.php">Cast Vote</a></li>';
+          }else{
+            echo'<li><a href="register.php">Register</a></li>';
+          }
+          ?>
+        
+          
           <li><a href="manage-profile.php">Profile</a></li>
-          <li><a href="student.php" class="active">User area</a></li> 
-          <li><a href="changepass.php">Change password</a></li>
+          <li><a href="voter_dashboard.php" class="">User Dashboard</a></li>          
           <?php
             if(!empty($_SESSION['member_id'])){
                 echo'<li><a href="logout.php">Logout</a></li> ';

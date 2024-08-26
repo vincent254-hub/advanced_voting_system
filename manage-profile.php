@@ -18,6 +18,7 @@ if($row)
  $stdId = $row['member_id'];
  $firstName = $row['first_name'];
  $lastName = $row['last_name'];
+ $admno = $row['admno'];
  $email = $row['email'];
  }
 ?>
@@ -45,6 +46,7 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
 </head>
 
 <body>
+  <?php include('./include/nav.php')?>
 
   <!-- ======= Header ======= -->
   <!-- End Header -->
@@ -56,26 +58,7 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-<li class="nav-item">
-  <a class="nav-link " href="index.php">
-    <i class="bi bi-grid"></i>
-    <span>Profile</span>
-  </a>
-</li><!-- End Dashboard Nav -->
-  <?php include('./include/components.php') ?>
-<!-- End Components Nav -->
-  <?php include('./include/forms.php')?>
-<!-- End Forms Nav -->
-  <?php include('./include/tables.php')?>
-<!-- End Tables Nav -->
-      <?php include('./include/charts.php')?>
-<!-- End Charts Nav -->
-      <?php include('./include/icons.php')?>
-<!-- End Icons Nav -->
-      <?php include('./include/pages.php') ?>
-<!-- End Pages Nav -->
 
-</ul>
 
   </aside><!-- End Sidebar-->
 
@@ -87,15 +70,17 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
       <div class="card m-2">
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-          <img src="./admin/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+          <img src="https://media.gettyimages.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=gi&k=20&c=tC514mTG014_uspJnEeJeKrQDiBY2N9GFYKPqwmtBuo=" alt="Profile" class="rounded-circle" style="width:200px; height:200px">
           <h2 class="d-flex"><?php echo $firstName ?></p> &nbsp;<p><?php echo $lastName ?>
                 </h2>
-          <h3>Voter</h3>
+          <p>Voter ID</p>
           <div class="social-links mt-2">
-            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              <p class="text-center">
+                <?php echo $admno ?>
+              </p>
+              <p class="text-center">
+                <?php echo $email ?>
+              </p>
           </div>
         </div>
       </div>
@@ -117,9 +102,9 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
             </li>
 
-            <li class="nav-item ">
+            <!-- <li class="nav-item ">
               <button class="nav-link disabled" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
-            </li>
+            </li> -->
 
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
@@ -129,9 +114,6 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
           <div class="tab-content pt-2">
 
             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-              <h5 class="card-title">About</h5>
-              <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
-
               <h5 class="card-title">Profile Details</h5>
 
               <div class="row">
@@ -139,9 +121,13 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
                 <div class="col-lg-9 col-md-8 d-flex">
                     <p><?php echo $firstName ?></p> &nbsp;<p><?php echo $lastName ?></p>
                 </div>
-              </div>
-
-              
+              </div>              
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label ">Voter Number</div>
+                <div class="col-lg-9 col-md-8 d-flex">
+                    <p><?php echo $admno ?></p>
+                </div>
+              </div>              
 
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">Email</div>
@@ -157,7 +143,7 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
                 <div class="row mb-3">
                   <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                   <div class="col-md-8 col-lg-9">
-                    <img src="./admin/assets/img/profile-img.jpg" alt="Profile">
+                    <img src="https://media.gettyimages.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=gi&k=20&c=tC514mTG014_uspJnEeJeKrQDiBY2N9GFYKPqwmtBuo=" alt="Profile" style="height:200px; width:200px; p-1 m-1">
                     <div class="pt-2">
                       <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                       <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
@@ -178,11 +164,17 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
                     <input type="text" class="form-control" name="lastname" maxlength="15" value="<?php echo $lastName ?>">
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label for="lastname" class="col-md-4 col-lg-3 col-form-label">Voter Identifier</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input type="text" class="form-control" name="lastname" maxlength="15" readonly value="<?php echo $admno ?>">
+                  </div>
+                </div>
 
                 <div class="row mb-3">
                   <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                   <div class="col-md-8 col-lg-9">
-                    <input type="text" class="form-control" name="email" maxlength="100" value="<?php echo $email?>">
+                    <input type="text" class="form-control" name="email" maxlength="100" readonly value="<?php echo $email?>">
                   </div>
                 </div>
 
