@@ -1,15 +1,10 @@
 <?php
-// require_once('check_voting_time.php');
+
 require('connection.php');
-
-// require_once('check_voting_time.php');
-
 session_start();
-
-
-    if (empty($_SESSION['member_id'])) {
-        header("location:access-denied.php");
-    }
+if (empty($_SESSION['member_id'])) {
+    header("location:access-denied.php");
+}
 
 
 $positions = mysqli_query($conn, "SELECT * FROM positionstable");
@@ -25,57 +20,31 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
     }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<?php include('include/header.php');?>
 
-  <title>User Dashboard</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="assets1/img/favicon.png" rel="icon">
-  <link href="assets1/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets1/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets1/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets1/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets1/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets1/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets1/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets1/vendor/simple-datatables/style.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets1/css/style.css" rel="stylesheet">
-  <script language="JavaScript" src="js/user.js"></script>
-  
-  
-<?php @include('include/header.php') ?>
-        
 </head>
+<?php include('include/nav.php');?>
 
-<body>
+<body class="contact-page">  
 
-        <div class="container">
-            <?php @include('include/nav.php') ?>
-        </div>
-  <?php
-  require_once('connection.php');
-  
-  ?>
+  <main class="main">
 
-  <main>
-    <div class="container mt-5">
+    <!-- Page Title -->
+    <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/contact-page-title-bg.jpg);">
+      <div class="container">
+        <h1>User Dashboard</h1>
+        
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
 
       <section class="section register d-flex align-items-center justify-content-center py-4">
         <div class="container">
@@ -133,24 +102,32 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
     </div>
       </section>
 
-    </div>
-  </main><!-- End #main -->
+      </div>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    </section><!-- /Contact Section -->
+
+  </main>
+
+  <?php include('include/footer.php'); ?>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <script src="assets1/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets1/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets1/vendor/chart.js/chart.min.js"></script>
-  <script src="assets1/vendor/echarts/echarts.min.js"></script>
-  <script src="assets1/vendor/quill/quill.min.js"></script>
-  <script src="assets1/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="assets1/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets1/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
-  <!-- Template Main JS File -->
-  <script src="assets1/js/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -344,15 +321,183 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
             }, 300000); // Stops the animation after 300 seconds
         });
 
-</script> 
-
-
+</script>
 
 </body>
 
 </html>
 
 <style>
+   
+    .contact {
+    background-image: url("../img/contact-bg.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    position: relative;
+    }
+
+    @media (max-width: 640px) {
+    .contact {
+        background-position: center 50px;
+        background-size: contain;
+    }
+    }
+
+    .contact:before {
+    content: "";
+    background: color-mix(in srgb, var(--background-color), transparent 30%);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    }
+
+    .contact .info-item+.info-item {
+    margin-top: 40px;
+    }
+
+    .contact .info-item i {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    margin-right: 15px;
+    }
+
+    .contact .info-item h3 {
+    padding: 0;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    }
+
+    .contact .info-item p {
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    }
+
+    .contact .php-email-form {
+    height: 100%;
+    }
+
+    .contact .php-email-form input[type=text],
+    .contact .php-email-form input[type=email],
+    .contact .php-email-form textarea {
+    font-size: 14px;
+    padding: 10px 15px;
+    box-shadow: none;
+    border-radius: 0;
+    color: var(--default-color);
+    background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+    border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+    }
+
+    .contact .php-email-form input[type=text]:focus,
+    .contact .php-email-form input[type=email]:focus,
+    .contact .php-email-form textarea:focus {
+    border-color: var(--accent-color);
+    }
+
+    .contact .php-email-form input[type=text]::placeholder,
+    .contact .php-email-form input[type=email]::placeholder,
+    .contact .php-email-form textarea::placeholder {
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+    }
+
+    .contact .php-email-form button[type=submit] {
+    color: var(--contrast-color);
+    background: var(--accent-color);
+    border: 0;
+    padding: 10px 30px;
+    transition: 0.4s;
+    border-radius: 50px;
+    }
+
+    .contact .php-email-form button[type=submit]:hover {
+    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+    }
+
+    /*--------------------------------------------------------------
+    # Global Page Titles & Breadcrumbs
+    --------------------------------------------------------------*/
+    .page-title {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 160px 0 60px 0;
+    text-align: center;
+    position: relative;
+    }
+
+    .page-title:before {
+    content: "";
+    background-color: color-mix(in srgb, var(--background-color), transparent 40%);
+    position: absolute;
+    inset: 0;
+    }
+
+    .page-title .container {
+    position: relative;
+    }
+
+    .page-title h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    }
+
+    .page-title .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    }
+
+    .page-title .breadcrumbs ol li+li {
+    padding-left: 10px;
+    }
+
+    .page-title .breadcrumbs ol li+li::before {
+    content: "/";
+    display: inline-block;
+    padding-right: 10px;
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+    }
+
+    /*--------------------------------------------------------------
+    # Global Sections
+    --------------------------------------------------------------*/
+    section,
+    .section {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 60px 0;
+    scroll-margin-top: 100px;
+    overflow: clip;
+    }
+
+    @media (max-width: 1199px) {
+
+    section,
+    .section {
+        scroll-margin-top: 66px;
+    }
+    }
+
     @keyframes fadeInOut {
         0%, 100% { opacity: 0; }
         50% { opacity: 1; }
@@ -372,15 +517,11 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
     75% {
         opacity: 0.5;
         color: purple; /* Fading out change to purple */
-    }
-
-   
+    }   
 
     .card-footer {
         animation: fadeInOut 5s infinite;
         font-weight:bold;
         
     }
-
-    
 </style>

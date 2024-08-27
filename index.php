@@ -5,6 +5,7 @@
   
 
   <?php include('include/header.php')?>
+</head>
 
 
 <body class="page-index">

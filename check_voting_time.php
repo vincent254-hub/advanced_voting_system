@@ -1,3 +1,30 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
 // Enable error reporting for debugging
 ini_set('display_errors', 1);
@@ -52,7 +79,7 @@ if ($voting_time) {
     // Check if the current time is within the voting period
     if ($current_time >= $start_time && $current_time <= $end_time) {
         // Voting is currently active
-        echo "Voting is active.";
+        // echo "Voting is active.";
     } else {
         // Voting is closed based on time
         echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";

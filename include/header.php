@@ -28,6 +28,7 @@
   <!-- <link href="./style.css" rel="stylesheet"> -->
   <!-- <link href="css/user_styles.css" rel="stylesheet" type="text/css" /> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script language="JavaScript" src="js/user.js"></script>
   
   
