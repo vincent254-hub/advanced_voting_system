@@ -44,10 +44,10 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
     <!-- Contact Section -->
     <section id="contact" class="contact section">
 
-      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+      <div class="mx-2 position-relative" data-aos="fade-up" data-aos-delay="100">
 
       <section class="section register d-flex align-items-center justify-content-center py-4">
-        <div class="container">
+        <div class="d-flex">
             <div class="row">
                 <div class="col-md-4">
                     <div class="container">
@@ -61,8 +61,8 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                     </div>
                 </div>
                 <div class="col-md-8">
-                <h2 class="text-center my-4" style="font-weight:bold">Winners</h2>                       
-                            <div class="card my-2 py-3 px-1" id="live-results-winners" style="background-color:#fffccc;">
+                <h2 class="text-center my-4" style="font-weight:bold; color: #495057;">Winners</h2>                       
+                            <div class="card my-2 py-3 px-1" id="live-results-winners" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">
                                 <!-- Live results will be rendered here -->
                             </div>
                        
@@ -75,15 +75,15 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
         <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <div class="card">                    
-                        <p class="text-center" style="font-weight:bold; font-size:20px;">Voting Timer Update</p>                    
+                <div class="card" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">                    
+                        <p class="text-center" style="font-weight:bold; font-size:20px; margin-top: 20px;">Voting Timer Update</p>                    
                     <div class="card-body">
                         <p class="text-center" style="font-weight:bold; font-size:20px;" id="countdown-timer"></p>
                     </div> 
                 </div>                   
             </div>
             <div class="col-md-4">
-                <div class="card info-card">
+                <div class="card info-card" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">
                         <div class="card-body">
                             <h5 class="card-title">Important <span>| Links</span></h5>
                                 <ul class="list-unstyled">
@@ -330,7 +330,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 <style>
    
     .contact {
-    background-image: url("../img/contact-bg.png");
+    background-image: url("./assets/img/contact-bg.png");
     background-position: left center;
     background-repeat: no-repeat;
     position: relative;

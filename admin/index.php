@@ -343,6 +343,42 @@ if($settings){
                 </div>
             
         </div>
+        <div class="col-md-6">
+        <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Replies to Contact Messages</h5>
+
+                            <div class="contact-replies-container">
+                                <?php
+                                // Fetch contact replies from the database
+                                $query = "SELECT * FROM contact_replies ORDER BY reply_date DESC";
+                                $result = mysqli_query($conn, $query);
+
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<div class="reply-card">';
+                                        echo '<div class="reply-header">';
+                                        echo '<span class="reply-title">' . htmlspecialchars($row['subject']) . '</span>';
+                                        echo '<span class="reply-date">' . date('M d, Y h:i A', strtotime($row['reply_date'])) . '</span>';
+                                        echo '</div>';
+                                        echo '<div class="reply-body">';
+                                        echo '<p>' . htmlspecialchars($row['message']) . '</p>';
+                                        echo '</div>';
+                                        echo '<div class="reply-actions">';
+                                        echo '<button class="btn btn-primary" onclick="sendReply(' . $row['id'] . ')">Reply</button>';
+                                        echo '<button class="btn btn-danger" onclick="deleteReply(' . $row['id'] . ')">Delete</button>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                    }
+                                } else {
+                                    echo '<p>No replies available.</p>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>  
+        </div>
+
       </div>
     </section>
 
@@ -591,6 +627,19 @@ if($settings){
 
     </script>
 
+<script>
+        function sendReply(replyId) {
+            // Implement the logic to send a reply to the user
+            alert('Send reply functionality for Reply ID: ' + replyId);
+        }
+
+        function deleteReply(replyId) {
+            if (confirm('Are you sure you want to delete this reply?')) {
+                window.location.href = 'delete_reply.php?id=' + replyId;
+            }
+        }
+    </script>
+
 
 
   <!-- Toast HTML for mobile view -->
@@ -601,3 +650,56 @@ if($settings){
 </body>
 
 </html>
+
+<style>
+     .contact-replies-container {
+            margin-top: 20px;
+        }
+
+        .reply-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .reply-card h5 {
+            font-weight: bold;
+        }
+
+        .reply-card p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .reply-card .reply-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reply-card .reply-header .reply-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .reply-card .reply-header .reply-date {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .reply-card .reply-body {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .reply-card .reply-actions {
+            margin-top: 10px;
+        }
+
+        .reply-card .reply-actions button {
+            margin-right: 10px;
+        }
+</style>

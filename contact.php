@@ -121,7 +121,7 @@
 <style>
    
     .contact {
-    background-image: url("../img/contact-bg.png");
+    background-image: url("./assets/img/contact-bg.png");
     background-position: left center;
     background-repeat: no-repeat;
     position: relative;
