@@ -3,8 +3,8 @@
 
 <head>
   <?php include('include/header.php');
-  
-    // setting up mailer details
+
+  // setting up mailer details
 
 if(isset($_POST['submit'])) {
   $smtp_host = $_POST['smtp_host'];
@@ -341,9 +341,16 @@ if($settings){
             
         </div>
         <div class="col-md-6">
-
-            
-
+            <div class="card" style="margin-top:50px;">
+                <!-- Toggle Switch for Enabling/Disabling Registration -->
+                <div class="form-group mx-auto">
+                    <label for="registrationToggle" class="form-label">Enable Registration</label>
+                    <label class="switch my-5">
+                        <input type="checkbox" id="registrationToggle" data-toggle="toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -588,6 +595,58 @@ if($settings){
             });
 
 
+            $(document).ready(function() {
+    // Fetch current registration status when the page loads
+    $.ajax({
+        url: 'get_registration_status.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // Set the toggle switch state based on the current registration status
+            $('#registrationToggle').prop('checked', response.registration_status === 1);
+        },
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Unable to fetch registration status.',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+
+    // Listen for changes on the toggle switch
+    $('#registrationToggle').change(function() {
+        // Determine the new status based on the switch position
+        var newStatus = $(this).is(':checked') ? 1 : 0;
+
+        // Send an AJAX request to update the status
+        $.ajax({
+            url: 'update_registration_status.php',
+            type: 'POST',
+            data: { registration_status: newStatus },
+            dataType: 'json',
+            success: function(response) {
+                Swal.fire({
+                    icon: response.status,
+                    title: response.status === 'success' ? 'Success' : 'Error',
+                    text: response.message,
+                    confirmButtonText: 'OK'
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update registration status.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+
+
 
 
     </script>
@@ -603,6 +662,7 @@ if($settings){
                 window.location.href = 'delete_reply.php?id=' + replyId;
             }
         }
+
     </script>
 
 
@@ -666,5 +726,55 @@ if($settings){
 
         .reply-card .reply-actions button {
             margin-right: 10px;
+        }
+
+        /* Styling for the switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4caf50;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #4caf50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
 </style>

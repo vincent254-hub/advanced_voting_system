@@ -4,8 +4,9 @@
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-5 col-md-12 footer-about">
-            <a href="index.php" class="logo d-flex align-items-center">
-              <span class="sitename">Heroes TVC EVS</span>
+            <a href="index.php" class="d-flex align-items-center">
+            <img src="assets/img/logo.png" alt="logo" style="height:150px; width:150px; padding:10px;">
+              <span class="sitename" style="font-size:20px; font-weight:bold;">Heroes TVC EVS</span>
             </a>
             <p>A Transparent System for casting your Vote with confidence. Here, every voice Counts...</p>
             <div class="social-links d-flex mt-4">

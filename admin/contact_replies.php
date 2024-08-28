@@ -3,8 +3,31 @@
 include('include/header.php'); // Include your header file
 include('../connection.php'); // Include your database connection
 
+// Handle delete request
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete']) && isset($_POST['delete_contact_id'])) {
+    $delete_contact_id = $_POST['delete_contact_id'];
+
+    // Delete replies associated with the contact message
+    $delete_replies_query = "DELETE FROM contact_replies WHERE contact_id = ?";
+    $stmt = $conn->prepare($delete_replies_query);
+    $stmt->bind_param("i", $delete_contact_id);
+    $stmt->execute();
+    $stmt->close();
+
+    // Delete the contact message
+    $delete_message_query = "DELETE FROM contact_us WHERE id = ?";
+    $stmt = $conn->prepare($delete_message_query);
+    $stmt->bind_param("i", $delete_contact_id);
+    if ($stmt->execute()) {
+        echo "<script>Swal.fire('Success', 'Message deleted successfully!', 'success');</script>";
+    } else {
+        echo "<script>Swal.fire('Error', 'Failed to delete message.', 'error');</script>";
+    }
+    $stmt->close();
+}
+
 // Handle reply form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_POST['id'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_POST['contact_id'])) {
     $contact_id = $_POST['contact_id'];
     $reply_message = $_POST['reply_message'];
 
@@ -32,6 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
             margin-bottom: 15px;
             padding: 15px;
             background-color: #f9f6f7;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .message-header {
@@ -52,28 +78,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
 </head>
 
 <body>
-<aside id="live-results-sidebar" class="sidebar">
-    <ul class="sidebar-nav" id="">
-      <li class="nav-item">
-        <a class="nav-link" href="">
-          <i class="bi bi-grid"></i>
-          <span>Live Stream</span>
-        </a>
+    <aside id="live-results-sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="">
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="bi bi-grid"></i>
+                    <span>Live Stream</span>
+                </a>
 
-        <div class="col-md-12 my-1" id="live-results-sidebar">
-          <div class="container">
-            <div class="card-body">
-              <p class="card-title text-center text-muted">Live Results from all positions</p>
-              <div id="live-results-content">
-                <!-- Live results will be displayed here -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </aside>
-
+                <div class="col-md-12 my-1" id="live-results-sidebar">
+                    <div class="container">
+                        <div class="card-body">
+                            <p class="card-title text-center text-muted">Live Results from all positions</p>
+                            <div id="live-results-content">
+                                <!-- Live results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </aside>
 
     <main id="main" class="main">
         <div class="pagetitle">
@@ -133,6 +158,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
                                             <button type="submit" name="reply" class="btn btn-primary mt-2">Send Reply</button>
                                         </form>
                                     ';
+
+                                    // Delete button
+                                    echo '
+                                        <form method="POST" action="" class="mt-3">
+                                            <input type="hidden" name="delete_contact_id" value="' . $row['id'] . '">
+                                            <button type="submit" name="delete" class="btn btn-danger mt-2">Delete Message</button>
+                                        </form>
+                                    ';
+
                                     echo '</div>';
                                 }
                             } else {
@@ -146,9 +180,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
         </section>
     </main>
 
-
     <script>
-           document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             let currentSectionIndex = 0;
 
             function renderLiveResults(data) {
@@ -183,10 +216,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
 
                             if (votePercentage < 50) {
                                 progressBar.style.backgroundColor = 'red';
-                            }else if (votePercentage>=50 && votePercentage < 75){
-
+                            } else if (votePercentage >= 50 && votePercentage < 75) {
                                 progressBar.style.backgroundColor = 'gold';
-                            }else if (votePercentage>= 75){
+                            } else if (votePercentage >= 75) {
                                 progressBar.style.backgroundColor = 'green';
                             }
 
@@ -214,12 +246,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
             }
 
             fetchLiveResults();
-            setInterval(fetchLiveResults, 10000); // Refresh every 10 seconds
+            setInterval(fetchLiveResults, 1000);
         });
     </script>
 
+    <?php include('include/footer.php'); ?>
 </body>
 
 </html>
-
-<?php include('include/footer.php'); ?>

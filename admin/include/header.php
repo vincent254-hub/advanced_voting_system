@@ -68,7 +68,7 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Admin Dashboard - OVS</title>
+  <title>Admin Dashboard - Heroes TVC EVS</title>
   
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -90,6 +90,8 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
   <link href="assets/css/style.css" rel="stylesheet">
   <!-- Include SweetAlert2 library -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -98,19 +100,14 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="Logo">
-        <span class="d-none d-lg-block">OVS</span>
+      <a href="index.php" class="d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="Logo" style="height:70px; width:70px; padding:5px;">
+        <span class="d-none d-lg-block">HEROES TVC</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div>
+    
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -135,6 +132,11 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
         <li class="nav-item mx-2">
           <a class="nav-link" href="positions.php">
             <i class="bi bi-briefcase"></i> Manage Positions
+          </a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="contact_replies.php">
+            <i class="bi bi-briefcase"></i> Reply To Contacts
           </a>
         </li>
         

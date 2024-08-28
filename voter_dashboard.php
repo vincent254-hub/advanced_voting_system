@@ -72,8 +72,8 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
             </div>
             
         </div>
-        <div class="container">
-        <div class="row">
+        
+        <div class="row mx-2">
             <div class="col-md-4">
                 <div class="card" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">                    
                         <p class="text-center" style="font-weight:bold; font-size:20px; margin-top: 20px;">Voting Timer Update</p>                    
@@ -98,7 +98,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                 </div>
             
         </div>
-        </div>
+        
     </div>
       </section>
 

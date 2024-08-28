@@ -20,33 +20,3 @@ if (isset($_POST['email']) || isset($_POST['admno'])) {
 
 ?>
 
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const formData = new FormData(this);
-
-        fetch('register.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'error') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: data.message
-                });
-            } else if (data.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: data.message
-                });
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
-</script> -->
