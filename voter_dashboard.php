@@ -27,10 +27,10 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 <?php include('include/header.php');?>
 
 </head>
-<?php include('include/nav.php');?>
+
 
 <body class="contact-page">  
-
+<?php include('include/nav.php');?>
   <main class="main">
 
     <!-- Page Title -->

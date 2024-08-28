@@ -12,6 +12,7 @@
           <li><a href="index.php" class="active">Home<br></a></li>          
           <li><a href="voter_dashboard.php">Dashboard</a></li>
           <li><a href="manage-profile.php">Profile</a></li>
+          <li><a href="user_messages.php">Messages</a></li>
           <li><a href="contact.php">Contact Us</a></li>
             <?php
                 if(!empty($_SESSION['member_id'])){

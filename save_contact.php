@@ -1,6 +1,14 @@
 <?php
 require_once('connection.php');
 
+session_start();
+
+
+if (empty($_SESSION['member_id'])) {
+    header("location:access-denied.php");
+}
+
+
 //retrieving smtp settinngs
   
 $result = mysqli_query($conn, "SELECT * FROM mailer_settings WHERE id=1");
@@ -22,12 +30,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $user_id = $_SESSION['member_id'];
     $name = htmlspecialchars($_POST['name']);
     $email = htmlspecialchars($_POST['email']);
     $subject = htmlspecialchars($_POST['subject']);
     $message = htmlspecialchars($_POST['message']);
 
-    $stmt = $conn->prepare("INSERT INTO contact_us (name, email, subject, message) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO contact_us (member_id, name, email, subject, message) VALUES (?,?, ?, ?, ?)");
 
     if ($stmt === false) {
         echo "<script>
@@ -43,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    $stmt->bind_param("ssss", $name, $email, $subject, $message);
+    $stmt->bind_param("issss", $user_id, $name, $email, $subject, $message);
 
     if ($stmt->execute()) {
         // Send email after successful database insertion

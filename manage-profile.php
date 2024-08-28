@@ -1,4 +1,4 @@
- <?php
+<?php
 session_start();
 require('connection.php');
 
@@ -36,35 +36,33 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
  header("Location: manage-profile.php");
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
- <?php include('./include/header.php')?>
- <script language="JavaScript" src="js/admin.js"></script>
+<?php include('include/header.php');?>
+
 </head>
+<?php include('include/nav.php');?>
 
-<body>
-  <?php include('./include/nav.php')?>
+<body class="contact-page">  
 
-  <!-- ======= Header ======= -->
-  <!-- End Header -->
+  <main class="main">
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+    <!-- Page Title -->
+    <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/contact-page-title-bg.jpg);">
+      <div class="container">
+        <h1>User Profile</h1>
+        
+      </div>
+    </div><!-- End Page Title -->
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
 
-
-
-  </aside><!-- End Sidebar-->
-
-
-<section class="section profile">
-  <div class="row">
+      <div class="row">
     <div class="col-xl-4">
 
       <div class="card m-2">
@@ -186,48 +184,6 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
 
             </div>
 
-            <div class="tab-pane fade pt-3" id="profile-settings">
-
-              <!-- Settings Form -->
-              <!-- <form>
-
-                <div class="row mb-3">
-                  <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                  <div class="col-md-8 col-lg-9">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                      <label class="form-check-label" for="changesMade">
-                        Changes made to your account
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                      <label class="form-check-label" for="newProducts">
-                        Information on new products and services
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="proOffers">
-                      <label class="form-check-label" for="proOffers">
-                        Marketing and promo offers
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                      <label class="form-check-label" for="securityNotify">
-                        Security alerts
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-              </form>End settings Form -->
-
-            </div>
-
             <div class="tab-pane fade pt-3" id="profile-change-password">
               <!-- Change Password Form -->
               <form action="changepass.php?id=<?php echo $_SESSION['member_id']; ?>" method="post" onSubmit="return updateProfile(this)">
@@ -267,28 +223,214 @@ $sql = mysqli_query($conn,"UPDATE userstable SET first_name='$myFirstName', last
 
     </div>
   </div>
-</section>
 
-</main><!-- End #main -->
+      </div>
 
-<!-- ======= Footer ======= -->
+    </section><!-- /Contact Section -->
 
-<?php include('include/footer.php')?>
-<!-- End Footer -->
+  </main>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <?php include('include/footer.php'); ?>
 
-<!-- Vendor JS Files -->
-<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendor/chart.js/chart.min.js"></script>
-<script src="assets/vendor/echarts/echarts.min.js"></script>
-<script src="assets/vendor/quill/quill.min.js"></script>
-<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="assets/vendor/tinymce/tinymce.min.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-<!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
+
 </html>
+
+<style>
+   
+    .contact {
+    background-image: url("./assets/img/contact-bg.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    position: relative;
+    }
+
+    @media (max-width: 640px) {
+    .contact {
+        background-position: center 50px;
+        background-size: contain;
+    }
+    }
+
+    .contact:before {
+    content: "";
+    background: color-mix(in srgb, var(--background-color), transparent 30%);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    }
+
+    .contact .info-item+.info-item {
+    margin-top: 40px;
+    }
+
+    .contact .info-item i {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    margin-right: 15px;
+    }
+
+    .contact .info-item h3 {
+    padding: 0;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    }
+
+    .contact .info-item p {
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    }
+
+    .contact .php-email-form {
+    height: 100%;
+    }
+
+    .contact .php-email-form input[type=text],
+    .contact .php-email-form input[type=email],
+    .contact .php-email-form textarea {
+    font-size: 14px;
+    padding: 10px 15px;
+    box-shadow: none;
+    border-radius: 0;
+    color: var(--default-color);
+    background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+    border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+    }
+
+    .contact .php-email-form input[type=text]:focus,
+    .contact .php-email-form input[type=email]:focus,
+    .contact .php-email-form textarea:focus {
+    border-color: var(--accent-color);
+    }
+
+    .contact .php-email-form input[type=text]::placeholder,
+    .contact .php-email-form input[type=email]::placeholder,
+    .contact .php-email-form textarea::placeholder {
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+    }
+
+    .contact .php-email-form button[type=submit] {
+    color: var(--contrast-color);
+    background: var(--accent-color);
+    border: 0;
+    padding: 10px 30px;
+    transition: 0.4s;
+    border-radius: 50px;
+    }
+
+    .contact .php-email-form button[type=submit]:hover {
+    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+    }
+
+    /*--------------------------------------------------------------
+    # Global Page Titles & Breadcrumbs
+    --------------------------------------------------------------*/
+    .page-title {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 160px 0 60px 0;
+    text-align: center;
+    position: relative;
+    }
+
+    .page-title:before {
+    content: "";
+    background-color: color-mix(in srgb, var(--background-color), transparent 40%);
+    position: absolute;
+    inset: 0;
+    }
+
+    .page-title .container {
+    position: relative;
+    }
+
+    .page-title h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    }
+
+    .page-title .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    }
+
+    .page-title .breadcrumbs ol li+li {
+    padding-left: 10px;
+    }
+
+    .page-title .breadcrumbs ol li+li::before {
+    content: "/";
+    display: inline-block;
+    padding-right: 10px;
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+    }
+
+    /*--------------------------------------------------------------
+    # Global Sections
+    --------------------------------------------------------------*/
+    section,
+    .section {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 60px 0;
+    scroll-margin-top: 100px;
+    overflow: clip;
+    }
+
+    @media (max-width: 1199px) {
+
+    section,
+    .section {
+        scroll-margin-top: 66px;
+    }
+    }
+</style>

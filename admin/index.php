@@ -278,10 +278,7 @@ if($settings){
         
       </div>
       <div class="row">
-        <div class="col-md-6">
-          <div class="form-label">
-                      
-                  </div>
+        <div class="col-md-6">         
             
                 <div class="container text-center">
                   
@@ -344,42 +341,10 @@ if($settings){
             
         </div>
         <div class="col-md-6">
-        <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Replies to Contact Messages</h5>
 
-                            <div class="contact-replies-container">
-                                <?php
-                                // Fetch contact replies from the database
-                                $query = "SELECT * FROM contact_replies ORDER BY reply_date DESC";
-                                $result = mysqli_query($conn, $query);
+            
 
-                                if (mysqli_num_rows($result) > 0) {
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<div class="reply-card">';
-                                        echo '<div class="reply-header">';
-                                        echo '<span class="reply-title">' . htmlspecialchars($row['subject']) . '</span>';
-                                        echo '<span class="reply-date">' . date('M d, Y h:i A', strtotime($row['reply_date'])) . '</span>';
-                                        echo '</div>';
-                                        echo '<div class="reply-body">';
-                                        echo '<p>' . htmlspecialchars($row['message']) . '</p>';
-                                        echo '</div>';
-                                        echo '<div class="reply-actions">';
-                                        echo '<button class="btn btn-primary" onclick="sendReply(' . $row['id'] . ')">Reply</button>';
-                                        echo '<button class="btn btn-danger" onclick="deleteReply(' . $row['id'] . ')">Delete</button>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                    }
-                                } else {
-                                    echo '<p>No replies available.</p>';
-                                }
-                                ?>
-                            </div>
-                        </div>
-                    </div>  
         </div>
-
-      </div>
     </section>
 
   </main><!-- End #main -->
