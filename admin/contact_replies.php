@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
                                         <form method="POST" action="" class="mt-3">
                                             <input type="hidden" name="contact_id" value="' . $row['id'] . '">
                                             <textarea name="reply_message" class="form-control" rows="3" placeholder="Write your reply..." required></textarea>
-                                            <button type="submit" name="reply" class="btn btn-primary mt-2">Send Reply</button>
+                                            <button type="submit" name="reply" class="btn btn-warning mt-2">Send Reply</button>
                                         </form>
                                     ';
 
@@ -179,6 +179,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reply']) && isset($_PO
             </div>
         </section>
     </main>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -84,7 +84,7 @@
 
 <div class="container py-5">
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-3">
         <form name="fmCandidates" id="fmCandidates" action="candidates.php" method="post" enctype="multipart/form-data" onsubmit="return candidateValidate(this)" class="card-body">
                 <h5 class="card-title">Manage <span>| Candidates</span></h5>                  
 
@@ -124,7 +124,7 @@
                 </div>
             </form>
     </div>
-    <div class="col-md-7">
+    <div class="col-md-9">
         <div class="container">
         <table class="table table-borderless datatable mt-4">
                 <thead>
@@ -160,6 +160,11 @@
     </div>
 </div>
 </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 <?php include("include/scripts.php") ?>
 </body>

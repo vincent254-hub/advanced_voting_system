@@ -33,7 +33,7 @@ return validationVerified;
 function registerValidate(registerForm){
 
 var validationVerified=true;
-var errorMessage="thank you! for registering";
+var errorMessage="Please Complete the filling before submission";
 var okayMessage="click OK to proceed for registration";
 
 if (registerForm.firstname.value=="")
@@ -156,74 +156,6 @@ function isValidLength(val){
 	}
 	return true;
 }
-
-function getProductTotal(field) {
-    clearErrorInfo();
-    var form = field.form;
-	if (field.value == "") field.value = 0;
-	if ( !isPosInt(field.value) ) {
-        var msg = 'No value provided.';
-        addValidationMessage(msg);
-        addValidationField(field)
-        displayErrorInfo( form );
-        return;
-	} else {
-		var product = field.name.slice(0, field.name.lastIndexOf("_") ); 
-        var price = form.elements[product + "_price"].value;
-		var amt = field.value * price;
-		form.elements[product + "_tot"].value = formatDecimal(amt);
-		doTotals(form);
-	}
-}
-
-function doTotals(form) {
-    var total = 0;
-    for (var i=0; PRODUCT_ABBRS[i]; i++) {
-        var cur_field = form.elements[ PRODUCT_ABBRS[i] + "_qty" ]; 
-        if ( !isPosInt(cur_field.value) ) {
-            var msg = 'No value provided.';
-            addValidationMessage(msg);
-            addValidationField(cur_field)
-            displayErrorInfo( form );
-            return;
-        }
-        total += parseFloat(cur_field.value) * parseFloat( form.elements[ PRODUCT_ABBRS[i] + "_price" ].value );
-    }
-    form.elements['total'].value = formatDecimal(total);
-}
-
-
-function finalCheck(orderForm) {
-    var validationVerified=true;
-var errorMessage="";
-var okayMessage="click OK to process your order";
-
-if (orderForm.quantity.value=="")
-{
-errorMessage+="Please provide a quantity.\n";
-validationVerified=false;
-}
-if (orderForm.quantity.value==0)
-{
-errorMessage+="Please provide a quantity rather than 0.\n";
-validationVerified=false;
-}
-if(orderForm.total.value=="")
-{
-errorMessage+="Total has not been calculated! Please provide first the quantity.\n";
-validationVerified=false;
-}
-if(!validationVerified)
-{
-alert(errorMessage);
-}
-if(validationVerified)
-{
-alert(okayMessage);
-}
-return validationVerified;
-}
-
 //validate updateForm
 function updateValidate(updateForm) {
     var validationVerified=true;

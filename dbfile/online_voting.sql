@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2024 at 01:22 PM
+-- Generation Time: Aug 29, 2024 at 02:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,6 +46,25 @@ INSERT INTO `administratortable` (`admin_id`, `first_name`, `last_name`, `email`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `candidates`
+--
+
+CREATE TABLE `candidates` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `position` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `candidates`
+--
+
+INSERT INTO `candidates` (`id`, `name`, `position`) VALUES
+(1, 'john doe', 'Student Chairperson');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `candidatestable`
 --
 
@@ -69,25 +88,72 @@ INSERT INTO `candidatestable` (`candidate_id`, `candidate_name`, `candidate_posi
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `candidate_responses`
+--
+
+CREATE TABLE `candidate_responses` (
+  `id` int(11) NOT NULL,
+  `candidate_id` int(11) NOT NULL,
+  `requirement_id` int(11) NOT NULL,
+  `answer` varchar(255) NOT NULL,
+  `score` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `candidate_responses`
+--
+
+INSERT INTO `candidate_responses` (`id`, `candidate_id`, `requirement_id`, `answer`, `score`) VALUES
+(1, 1, 1, 'Because am i have what it takes to be a leader', 60);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_replies`
+--
+
+CREATE TABLE `contact_replies` (
+  `id` int(11) NOT NULL,
+  `contact_id` int(11) NOT NULL,
+  `reply_message` text NOT NULL,
+  `reply_by` text NOT NULL,
+  `reply_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contact_replies`
+--
+
+INSERT INTO `contact_replies` (`id`, `contact_id`, `reply_message`, `reply_by`, `reply_date`) VALUES
+(1, 2, 'hello how may i help you?', '', '2024-08-28 09:31:42'),
+(6, 3, 'hey thanks for your response our team will respont to you approprately....', '', '2024-08-28 10:17:28'),
+(7, 3, 'thank you. ill be waiting...', 'user', '2024-08-28 10:48:31'),
+(8, 3, 'thank you. ill be waiting...', 'user', '2024-08-28 10:53:06');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contact_us`
 --
 
 CREATE TABLE `contact_us` (
   `id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `message` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_deleted` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `contact_us`
 --
 
-INSERT INTO `contact_us` (`id`, `name`, `email`, `subject`, `message`, `created_at`) VALUES
-(1, 'Vincent Khamala', 'vincentkhamala9@gmail.com', 'My test contact', 'hello can you see my message?', '2024-08-26 19:14:12'),
-(2, 'Vincent Khamala', 'vincentkhamala9@gmail.com', 'test app message', 'hello there', '2024-08-27 11:11:09');
+INSERT INTO `contact_us` (`id`, `member_id`, `name`, `email`, `subject`, `message`, `created_at`, `user_deleted`) VALUES
+(2, 0, 'Vincent Khamala', 'vincentkhamala9@gmail.com', 'test app message', 'hello there', '2024-08-27 11:11:09', 0),
+(3, 58, 'Daniel Brown', 'daniel.brown@example.com', 'test user id into db', 'hello', '2024-08-28 10:09:54', 1);
 
 -- --------------------------------------------------------
 
@@ -129,6 +195,46 @@ CREATE TABLE `positionstable` (
 
 INSERT INTO `positionstable` (`position_id`, `position_name`) VALUES
 (52, 'Student_ChairPerson');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requirements`
+--
+
+CREATE TABLE `requirements` (
+  `id` int(11) NOT NULL,
+  `position` varchar(100) NOT NULL,
+  `question` text NOT NULL,
+  `weight` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `requirements`
+--
+
+INSERT INTO `requirements` (`id`, `position`, `question`, `weight`) VALUES
+(1, 'Student Chairperson', 'why are you interested in this position?', 96),
+(2, 'Student Chairperson', 'How is your general class performance in the previous examinations', 80);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL,
+  `registration_status` tinyint(1) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`id`, `registration_status`, `updated_at`) VALUES
+(1, 0, '2024-08-29 10:34:09');
 
 -- --------------------------------------------------------
 
@@ -215,10 +321,31 @@ ALTER TABLE `administratortable`
   ADD PRIMARY KEY (`admin_id`);
 
 --
+-- Indexes for table `candidates`
+--
+ALTER TABLE `candidates`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `candidatestable`
 --
 ALTER TABLE `candidatestable`
   ADD PRIMARY KEY (`candidate_id`);
+
+--
+-- Indexes for table `candidate_responses`
+--
+ALTER TABLE `candidate_responses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `requirement_id` (`requirement_id`),
+  ADD KEY `candidate_id` (`candidate_id`);
+
+--
+-- Indexes for table `contact_replies`
+--
+ALTER TABLE `contact_replies`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `contact_id` (`contact_id`);
 
 --
 -- Indexes for table `contact_us`
@@ -237,6 +364,18 @@ ALTER TABLE `mailer_settings`
 --
 ALTER TABLE `positionstable`
   ADD PRIMARY KEY (`position_id`);
+
+--
+-- Indexes for table `requirements`
+--
+ALTER TABLE `requirements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `userstable`
@@ -268,16 +407,34 @@ ALTER TABLE `administratortable`
   MODIFY `admin_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `candidates`
+--
+ALTER TABLE `candidates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `candidatestable`
 --
 ALTER TABLE `candidatestable`
   MODIFY `candidate_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
+-- AUTO_INCREMENT for table `candidate_responses`
+--
+ALTER TABLE `candidate_responses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `contact_replies`
+--
+ALTER TABLE `contact_replies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `contact_us`
 --
 ALTER TABLE `contact_us`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `mailer_settings`
@@ -290,6 +447,18 @@ ALTER TABLE `mailer_settings`
 --
 ALTER TABLE `positionstable`
   MODIFY `position_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- AUTO_INCREMENT for table `requirements`
+--
+ALTER TABLE `requirements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `userstable`
@@ -312,6 +481,19 @@ ALTER TABLE `voting_time`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `candidate_responses`
+--
+ALTER TABLE `candidate_responses`
+  ADD CONSTRAINT `candidate_responses_ibfk_1` FOREIGN KEY (`requirement_id`) REFERENCES `requirements` (`id`),
+  ADD CONSTRAINT `candidate_responses_ibfk_2` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`id`);
+
+--
+-- Constraints for table `contact_replies`
+--
+ALTER TABLE `contact_replies`
+  ADD CONSTRAINT `contact_replies_ibfk_1` FOREIGN KEY (`contact_id`) REFERENCES `contact_us` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `votestable`

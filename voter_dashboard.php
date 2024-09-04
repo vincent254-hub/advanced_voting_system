@@ -6,6 +6,43 @@ if (empty($_SESSION['member_id'])) {
     header("location:access-denied.php");
 }
 
+// Fetch voter details
+$voter_id = $_SESSION['member_id'];
+$query = "SELECT * FROM userstable WHERE member_id = '$voter_id'";
+$result = mysqli_query($conn, $query);
+$voter = mysqli_fetch_assoc($result);
+
+// Fetch voting status
+$votingStatusQuery = "SELECT * FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";
+$votingStatusResult = mysqli_query($conn, $votingStatusQuery);
+$votingStatus = mysqli_fetch_assoc($votingStatusResult);
+$end_time = $votingStatus ? $votingStatus['end_time'] : null;
+$votingOpen = $votingStatus ? true : false;
+
+// Calculate voter turnout
+$totalVotesQuery = "SELECT COUNT(DISTINCT voter_id) AS totalVotes FROM votestable";
+$totalVotersQuery = "SELECT COUNT(*) as totalVoters FROM userstable";
+$totalVotesResult = mysqli_query($conn, $totalVotesQuery);
+$totalVotersResult = mysqli_query($conn, $totalVotersQuery);
+
+$totalVotes = mysqli_fetch_assoc($totalVotesResult)['totalVotes'];
+$totalVoters = mysqli_fetch_assoc($totalVotersResult)['totalVoters'];
+$voterTurnout = $totalVotes ? ($totalVotes / $totalVoters) * 100 : 0;
+
+// Fetch voting history
+$votingHistoryQuery = "SELECT 
+                        p.position_name, 
+                        c.candidate_name, 
+                        v.position, 
+                        v.candidateName,
+                        v.vote_date, 
+                        v.id AS vote_id 
+                    FROM votestable v
+                    JOIN candidatestable c ON v.candidateName = c.candidate_name
+                    JOIN positionstable p ON v.position = p.position_name
+                    WHERE v.voter_id = '$voter_id'";
+$votingHistoryResult = mysqli_query($conn, $votingHistoryQuery);
+
 
 $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 
@@ -31,82 +68,139 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 
 <body class="contact-page">  
 <?php include('include/nav.php');?>
-  <main class="main">
 
-    <!-- Page Title -->
+
+<main class="main">
     <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/contact-page-title-bg.jpg);">
-      <div class="container">
-        <h1>User Dashboard</h1>
-        
-      </div>
-    </div><!-- End Page Title -->
+        <div class="container">
+            <h1>User Dashboard</h1>
+        </div>
+    </div>
 
-    <!-- Contact Section -->
     <section id="contact" class="contact section">
+        <div class="mx-2 position-relative" data-aos="fade-up" data-aos-delay="100">
+            <div class="container">
+                <span>Welcome, <?php echo $voter['first_name']; ?> <?php echo $voter['last_name']; ?></span>
+                <a href="logout.php" class="btn btn-warning" style="margin-left: 150px;">Logout</a>
+            </div>
+        </div>    
+    </section>
+    <div class="container">
+        <div class="align-items-center justify-content-center py-4">
+                <div class="row my-4">
+                    <div class="col-md-4">
+                        <div class="card my-4">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="card-title mb-0 text-center">Profile</h5>
+                            </div>
+                            <div class="card-body">                        
+                            
+                                <p><strong>Name:</strong><?php echo $voter['first_name']. ' '. $voter['last_name']; ?></p>
+                                <p><strong>Email:</strong> <?php echo $voter['email']; ?></p>
+                                <p><strong>Voter ID:</strong> <?php echo $voter['admno']; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card my-4" style="border: 1px solid #e3e3e3; border-radius: 8px;"> 
+                            <div class="card-header bg-dark text-white text-center">
+                                <h5 class="card-title mb-0">Voting Session</h5>
+                            </div>                   
+                                <!-- <p class="text-center" style="font-weight:bold; font-size:20px; margin-top: 20px;">Voting Timer Update</p>                     -->
+                            <div class="card-body">
+                                <p class="text-center" style="font-weight:bold; font-size:20px;" id="countdown-timer"></p>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card my-4">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="card-title mb-0 text-center">Voter Turnout</h5>
+                                </div>
+                            <div class="card-body">                                
+                                <p><?php echo round($voterTurnout, 2); ?>% of voters have cast their vote.</p>
+                                <p><strong>Total Votes Cast:</strong> <?php echo $totalVotes; ?></p>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-md-4">
+                        <h5 class="text-center" style="font-weight:bold;">Live stream Results</h5>
+                        <div class="card my-4 py-5 px-5" id="live-results-content">
 
-      <div class="mx-2 position-relative" data-aos="fade-up" data-aos-delay="100">
-
-      <section class="section register d-flex align-items-center justify-content-center py-4">
-        <div class="d-flex">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="container">
-                        <h2 class="text-center" style="font-weight:bold">Live stream Results</h2>
-                        <div class="card my-3 py-5 px-5" id="live-results-content"> 
-                                <!-- live results -->
                         </div>
                         <div class="card-footer">                        
-                           <?php echo (date('Y'));?> Heroes TVC Decides
+                                <?php echo (date('Y'));?> Heroes TVC Decides
                         </div>
                     </div>
-                </div>
-                <div class="col-md-8">
-                <h2 class="text-center my-4" style="font-weight:bold; color: #495057;">Winners</h2>                       
-                            <div class="card my-2 py-3 px-1" id="live-results-winners" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">
-                                <!-- Live results will be rendered here -->
-                            </div>
-                       
-                    </div>
-                </div>
+                    <div class="col-md-4">
+                        <h5 class="card-title text-center"><?php echo(date('Y')); ?> Ballot</h5>
+                        <div class="card my-4">
                                 
-            </div>
-            
-        </div>
-        
-        <div class="row mx-2">
-            <div class="col-md-4">
-                <div class="card" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">                    
-                        <p class="text-center" style="font-weight:bold; font-size:20px; margin-top: 20px;">Voting Timer Update</p>                    
-                    <div class="card-body">
-                        <p class="text-center" style="font-weight:bold; font-size:20px;" id="countdown-timer"></p>
-                    </div> 
-                </div>                   
-            </div>
-            <div class="col-md-4">
-                <div class="card info-card" style="background-color: #f8f9fa; border: 1px solid #e3e3e3; border-radius: 8px;">
-                        <div class="card-body">
-                            <h5 class="card-title">Important <span>| Links</span></h5>
-                                <ul class="list-unstyled">
-                                    <li><a class="dropdown-item" href="voter_dashboard.php">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="manage-profile.php">Voter Profile</a></li>
-                                    <li><a class="dropdown-item" href="vote.php">Cast Vote</a></li>
-                                    <li><a class="dropdown-item" href="refresh.php">Tally Results</a></li>
-                                    <?php if (!empty($_SESSION['member_id'])) { echo '<li><a href="logout.php">Logout</a></li>'; } ?>
-                                </ul>
+                                <div class="card-body">
+                                <?php if($votingOpen): ?>
+                                    <p>Click the button below to cast your vote.</p>
+                                    <a href="vote.php" class="btn btn-success">Vote Now</a>
+                                <?php else: ?>
+                                    <p>Voting Closed</p>
+                                <?php endif; ?>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        
+                    </div>
+                </div>            
+                <div class="row my-4">
+                    <div class="col-md-6">
+                    <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title mb-0">Voting History</h5>
                 </div>
-            
+                <div class="card-body">
+                    <?php if(mysqli_num_rows($votingHistoryResult) > 0): ?>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Candidate</th>
+                                    <th>Vote Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while($history = mysqli_fetch_assoc($votingHistoryResult)): ?>
+                                    <tr>
+                                        <td><?php echo $history['position_name']; ?></td>
+                                        <td><?php echo $history['candidate_name']; ?></td>
+                                        <td><?php echo date('d M Y, H:i', strtotime($history['vote_date'])); ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p>You have not voted yet.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="card-title mb-0">Need Help?</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>If you have any issues or need assistance, feel free to <a href="contact.php">contact our support team</a>.</p>
+                                <p>Refer to our <a href="faq.php">FAQs</a> for common questions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>            
+            </div>
         </div>
-        
     </div>
-      </section>
+</main>
 
-      </div>
-
-    </section><!-- /Contact Section -->
-
-  </main>
 
   <?php include('include/footer.php'); ?>
 

@@ -1,16 +1,17 @@
 <div class="container py-5 my-3">
     <?php include('include/header.php') ?>
 </div>
-<div class="col-12 my-5">
+<div class="col-md-12 my-5">
     <div class="card top-selling overflow-auto">
         <form name="fmPositions" id="fmPositions" action="positions.php" method="post" onsubmit="return positionValidate(this)">
             <div class="container d-flex">
                 <label class="m-3">Position Name</label>
-                <input class="form-control m-3" style="max-width:70%; max-height: 50px;" type="text" name="position" />
+                <input class="form-control m-3" style="max-width:60%; max-height: 50px;" type="text" name="position" />
+            </div>
                 <div class="container text-center m-3">
                     <button class="btn btn-primary" type="submit" name="Submit" value="Add">Create Position</button>
                 </div>
-            </div>
+            
 
             <?php include('include/pos.php') ?>
             <div class="card top-selling overflow-auto container">

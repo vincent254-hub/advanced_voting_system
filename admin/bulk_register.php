@@ -129,10 +129,10 @@ if (isset($_FILES['csv_file']['name'])) {
                                     <p>We are pleased to inform you that your account has been successfully created on our platform.</p>
                                     <h3>Here are your login credentials</h3>
                                     <ul>
-                                        <li><strong>Email or Admission Number:</strong> $email and $admno</li>
-                                        <li><strong>Password:</strong> $admno</li>
+                                        <li><strong>Email and Admission Number:</strong> $email and $admno</li>
+                                        <li><strong>Kindly use your admission number </strong> $admno as your password</li>
                                     </ul>
-                                    <p>For security reasons, we recommend that you change your password immediately after logging in.</p>
+                                    // <p>For security reasons, we recommend that you change your password immediately after logging in.</p>
                                     <p>To access your account, please click the button below:</p>
                                     <p><a href=`$baseUrl/ovs/login.php` class='button'>Login to Your Account</a></p>
                                     <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
@@ -140,7 +140,7 @@ if (isset($_FILES['csv_file']['name'])) {
                                     <p>$from_name</p>
                                 </div>
                                 <div class='email-footer'>
-                                    <p>This email was sent by $from_name. If you are not a student at Heroes TVC who/s responsible for this account, please contact us immediately.</p>
+                                    <p>This email was sent by $from_name. If you are not a student at Heroes TVC who's responsible for this account, please contact us immediately.</p>
                                     <p>&copy; $date $from_name. All rights reserved.</p>
                                 </div>
                             </div>

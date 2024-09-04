@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>OVS Admin Login</title>
+  <title>Heroes Admin Login</title>
   <meta content="this is an online voting application for college| university students" name="description">
-  <meta content="OVS" name="keywords">
+  <meta content="EVS" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">

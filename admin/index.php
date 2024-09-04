@@ -134,7 +134,7 @@ if($settings){
       <div class="row">
 
         <!-- Important Links Card -->
-        <div class="col-xxl-3 col-md-3">
+        <!-- <div class="col-xxl-3 col-md-3">
           <div class="card info-card">
             <div class="card-body">
               <h5 class="card-title">Important <span>| Links</span></h5>
@@ -149,10 +149,11 @@ if($settings){
               </ul>
             </div>
           </div>
-        </div><!-- End Important Links Card -->
+        </div> -->
+        <!-- End Important Links Card -->
 
         <!-- Votes Results Card -->
-        <div class="col-xxl-3 col-md-3">
+       <!--  <div class="col-xxl-3 col-md-3">
           <div class="card info-card">
             <div class="card-body">
               <h5 class="card-title">Votes <span>| Results</span></h5>
@@ -171,10 +172,11 @@ if($settings){
               </div>
             </div>
           </div>
-        </div><!-- End Votes Results Card -->
+        </div> -->
+        <!-- End Votes Results Card -->
 
         <!-- HTVC Comrades Decide Card -->
-        <div class="col-xxl-6 col-md-6">
+        <!-- <div class="col-xxl-6 col-md-6">
           <div class="card info-card">
             <div class="card-body">
               <h5 class="card-title"><span>| HTVC Comrades Decide</span></h5>
@@ -203,7 +205,8 @@ if($settings){
               </div>
             </div>
           </div>
-        </div><!-- End HTVC Comrades Decide Card -->
+        </div> -->
+        <!-- End HTVC Comrades Decide Card -->
 
         <!-- Updates Section -->
         <div class="col-12">
@@ -344,7 +347,7 @@ if($settings){
             <div class="card" style="margin-top:50px;">
                 <!-- Toggle Switch for Enabling/Disabling Registration -->
                 <div class="form-group mx-auto">
-                    <label for="registrationToggle" class="form-label">Enable Registration</label>
+                    <label for="registrationToggle" class="form-label mx-3">Enable Registration</label>
                     <label class="switch my-5">
                         <input type="checkbox" id="registrationToggle" data-toggle="toggle">
                         <span class="slider round"></span>
@@ -352,6 +355,8 @@ if($settings){
                 </div>
             </div>
         </div>
+        
+  </div>
     </section>
 
   </main><!-- End #main -->
@@ -374,6 +379,11 @@ if($settings){
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>

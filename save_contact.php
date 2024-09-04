@@ -74,13 +74,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Email content settings
             $mail->isHTML(true);
-            $mail->Subject = 'New Contact Form Submission';
+            $mail->Subject = $subject;
             $mail->Body = "
-                <h3>New Contact Form Submission</h3>
-                <p><strong>Name:</strong> {$name}</p>
-                <p><strong>Email:</strong> {$email}</p>
-                <p><strong>Subject:</strong> {$subject}</p>
-                <p><strong>Message:</strong><br>{$message}</p>
+            <html>
+            <head>
+                <style>
+                    .email-container { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .email-header { background-color: #f8f8f8; padding: 20px; text-align: center; }
+                    .email-body { padding: 20px; }
+                    .email-footer { background-color: #121212; padding: 20px; text-align: center; font-size: 12px; color: #777; }
+                    .button { display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 5px; }
+                </style>
+                </head>
+            <body>
+            <div class='email-container'>
+                <div class='email-header'>
+                    <h2>{$subject}</h2>
+                </div>
+                <div class='email-body'>
+                    <p>Dear Admin,</p>
+                    <p>My Name is {$name}, {$email}</p>
+                    <h3>Subject:{$subject}</h3>
+                    
+                    <p>{$message}</p> 
+
+                    <p>Best regards,</p>
+                    <p>$name</p>
+                </div>
             ";
 
             $mail->send();

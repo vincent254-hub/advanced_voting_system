@@ -102,9 +102,9 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.php" class="d-flex align-items-center">
         <img src="assets/img/logo.png" alt="Logo" style="height:70px; width:70px; padding:5px;">
-        <span class="d-none d-lg-block">HEROES TVC</span>
+        <span class="d-none d-lg-block" style="font-weight:bold; font-size:18px; ">HEROES TVC</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <i class="bi bi-clock toggle-sidebar-btn" style="margin:10px;font-size:16px;"></i>
     </div>
 
     
@@ -112,52 +112,26 @@ if (isset($_GET['id']) && isset($_POST['update'])) {
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle" href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li>
-
         <!-- Expose all links in the navbar -->
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="candidates.php">
-            <i class="bi bi-person"></i> Manage Candidates
-          </a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="refresh.php">
-            <i class="bi bi-bar-chart"></i> Poll Results
-          </a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="positions.php">
-            <i class="bi bi-briefcase"></i> Manage Positions
-          </a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="contact_replies.php">
-            <i class="bi bi-briefcase"></i> Reply To Contacts
-          </a>
-        </li>
-        
-
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo "$firstName $lastName"; ?></span>
+            <i class="bi bi-list toggle-sidebar-btn"></i>           
           </a>
-
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h2><?php echo "$firstName $lastName"; ?></h2>
-              <span>Administrator</span>
+              <h2 class="margin:5px;"><?php echo "$firstName $lastName"; ?></h2>
+              <span>System Admin</span>
             </li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item d-flex align-items-center" href="manage-admins.php"><i class="bi bi-person"></i><span>My Profile</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="manage-admins.php"><i class="bi bi-person"></i><span>Profile</span></a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item d-flex align-items-center" href="manage-admins.php"><i class="bi bi-gear"></i><span>Account Settings</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="candidates.php"><i class="bi bi-people"></i><span>Manage Candidates</span></a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-question-circle"></i><span>Need Help?</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="positions.php"><i class="bi bi-person-check"></i><span>Manage Positions</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="async_results.php"><i class="bi bi-clock"></i><span>View Results</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="contact_replies.php"><i class="bi bi-question-circle"></i><span>Respond to Queries</span></a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item d-flex align-items-center" href="logout.php"><i class="bi bi-box-arrow-right"></i><span>Sign Out</span></a></li>
           </ul>

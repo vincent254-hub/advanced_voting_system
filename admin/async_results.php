@@ -16,13 +16,14 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <?php include('include/header.php') ?>
+    <!-- <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>View Poll Results</title>
+    <title>View Poll Results</title> -->
     <!-- Include your CSS files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet"> -->
     <style>
         body {
             background-color: #f8f9fa;
@@ -96,19 +97,21 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
         <div class="row">
             <div class="col-md-6">
                 
-                    <h2><i class="bi bi-bar-chart-fill me-2"></i>Select a Position to View Results</h2>
-                    <form id="positionForm">
-                        <div class="mb-3">
-                            <label for="position" class="form-label">Position</label>
-                            <select class="form-select" id="position" name="position">
-                                <option value="select">Select a position</option>
-                                <?php while ($row = mysqli_fetch_array($positions)) { ?>
-                                    <option value="<?php echo $row['position_name']; ?>"><?php echo $row['position_name']; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        
-                    </form>
+                   <div style="margin-top:20px;">
+                         <h2><i class="bi bi-bar-chart-fill me-2"></i>Select a Position to View Results</h2>
+                            <form id="positionForm">
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">Position</label>
+                                    <select class="form-select" id="position" name="position">
+                                        <option value="select">Select a position</option>
+                                        <?php while ($row = mysqli_fetch_array($positions)) { ?>
+                                            <option value="<?php echo $row['position_name']; ?>"><?php echo $row['position_name']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                
+                            </form>                       
+                   </div>
 
                     <div id="results">
 
