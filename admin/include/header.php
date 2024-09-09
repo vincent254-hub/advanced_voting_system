@@ -8,6 +8,11 @@ if(empty($_SESSION['admin_id'])){
     exit();
 }
 
+    // Include language files
+    // $lang = isset($_GET['lang']) ? $_GET['lang'] : 'en'; // Default to English
+    // include("../lang/{$lang}.php");
+
+
 // timer
 // Fetch the active voting period from the database
 $sql = "SELECT end_time FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";

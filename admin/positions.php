@@ -6,7 +6,7 @@
         <form name="fmPositions" id="fmPositions" action="positions.php" method="post" onsubmit="return positionValidate(this)">
             <div class="container d-flex">
                 <label class="m-3">Position Name</label>
-                <input class="form-control m-3" style="max-width:60%; max-height: 50px;" type="text" name="position" />
+                <input class="form-control m-3" style="max-width:60%; max-height: 50px;" type="text" name="position_name" />
             </div>
                 <div class="container text-center m-3">
                     <button class="btn btn-primary" type="submit" name="Submit" value="Add">Create Position</button>
@@ -28,9 +28,8 @@
                         </thead>
                         <tbody>
                             <?php
-                            // Assuming $conn is your database connection
-
-                            $query = "SELECT * FROM positionstable"; // Replace with your actual query
+                            
+                            $query = "SELECT * FROM positionstable";
                             $result = mysqli_query($conn, $query);
 
                             if (!$result) {

@@ -6,6 +6,13 @@ if (empty($_SESSION['member_id'])) {
     header("location:access-denied.php");
 }
 
+// handle text size
+// $textSize = isset($_COOKIE['textSize']) ? $_COOKIE['textSize'] : '16px';
+
+// Include language files
+$lang = isset($_GET['lang']) ? $_GET['lang'] : 'en'; // Default to English
+include("lang/{$lang}.php");
+
 // Fetch voter details
 $voter_id = $_SESSION['member_id'];
 $query = "SELECT * FROM userstable WHERE member_id = '$voter_id'";
@@ -13,36 +20,40 @@ $result = mysqli_query($conn, $query);
 $voter = mysqli_fetch_assoc($result);
 
 // Fetch voting status
-$votingStatusQuery = "SELECT * FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";
-$votingStatusResult = mysqli_query($conn, $votingStatusQuery);
-$votingStatus = mysqli_fetch_assoc($votingStatusResult);
-$end_time = $votingStatus ? $votingStatus['end_time'] : null;
-$votingOpen = $votingStatus ? true : false;
+// $votingStatusQuery = "SELECT * FROM voting_time WHERE status = 1 ORDER BY id DESC LIMIT 1";
+// $votingStatusResult = mysqli_query($conn, $votingStatusQuery);
+// $votingStatus = mysqli_fetch_assoc($votingStatusResult);
+// $end_time = $votingStatus ? $votingStatus['end_time'] : null;
+// $votingOpen = $votingStatus ? true : false;
 
-// Calculate voter turnout
-$totalVotesQuery = "SELECT COUNT(DISTINCT voter_id) AS totalVotes FROM votestable";
-$totalVotersQuery = "SELECT COUNT(*) as totalVoters FROM userstable";
-$totalVotesResult = mysqli_query($conn, $totalVotesQuery);
-$totalVotersResult = mysqli_query($conn, $totalVotersQuery);
+    // Include language files
+    $lang = isset($_GET['lang']) ? $_GET['lang'] : 'en'; // Default to English
+    include("lang/{$lang}.php");
 
-$totalVotes = mysqli_fetch_assoc($totalVotesResult)['totalVotes'];
-$totalVoters = mysqli_fetch_assoc($totalVotersResult)['totalVoters'];
-$voterTurnout = $totalVotes ? ($totalVotes / $totalVoters) * 100 : 0;
+    
+    // Calculate voter turnout
+    $totalVotesQuery = "SELECT COUNT(DISTINCT voter_id) AS totalVotes FROM votestable";
+    $totalVotersQuery = "SELECT COUNT(*) as totalVoters FROM userstable";
+    $totalVotesResult = mysqli_query($conn, $totalVotesQuery);
+    $totalVotersResult = mysqli_query($conn, $totalVotersQuery);
 
-// Fetch voting history
-$votingHistoryQuery = "SELECT 
-                        p.position_name, 
-                        c.candidate_name, 
-                        v.position, 
-                        v.candidateName,
-                        v.vote_date, 
-                        v.id AS vote_id 
-                    FROM votestable v
-                    JOIN candidatestable c ON v.candidateName = c.candidate_name
-                    JOIN positionstable p ON v.position = p.position_name
-                    WHERE v.voter_id = '$voter_id'";
-$votingHistoryResult = mysqli_query($conn, $votingHistoryQuery);
+    $totalVotes = mysqli_fetch_assoc($totalVotesResult)['totalVotes'];
+    $totalVoters = mysqli_fetch_assoc($totalVotersResult)['totalVoters'];
+    $voterTurnout = $totalVotes ? ($totalVotes / $totalVoters) * 100 : 0;
 
+    // Fetch voting history
+    $votingHistoryQuery = "SELECT 
+                            p.position_name, 
+                            c.candidate_name, 
+                            v.position, 
+                            v.candidateName,
+                            v.vote_date, 
+                            v.id AS vote_id 
+                        FROM votestable v
+                        JOIN candidatestable c ON v.candidateName = c.candidate_name
+                        JOIN positionstable p ON v.position = p.position_name
+                        WHERE v.voter_id = '$voter_id'";
+    $votingHistoryResult = mysqli_query($conn, $votingHistoryQuery);
 
 $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 
@@ -58,10 +69,21 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="<?php echo $lang; ?>">
+    
 <head>
 <?php include('include/header.php');?>
+
+<style>
+    body{
+        font-size:<?php echo $textSize;?>;
+    }
+
+    .high-contrast{
+        background-color:#000;
+        color:#fff;
+    }
+</style>
 
 </head>
 
@@ -76,16 +98,36 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
             <h1>User Dashboard</h1>
         </div>
     </div>
+    <!-- language and accessibility controls -->
+    <div class="top-bar d-flex justify-content-end p-3">
+        <!-- langage selectoer -->
+         <select name="" id="language-selector" onChange="changeLanguage()">
+            <option value="en" <?php echo $lang == 'en'? 'selected' : '';?>>English</option>
+            <option value="fr" <?php echo $lang == 'fr'? 'selected' : '';?>>Francais</option>
+            <option value="es" <?php echo $lang == 'es'? 'selected' : '';?>>Espanyol</option>
+         </select>
+
+         <!-- High contrast mode toggle -->
+        
+        <button id="toggle-contrast" class="btn btn-secondary ms-2" onClick="toggleHighContrast()">
+            <?php echo $translations['high_contrast'];?>
+        </button>
+
+        <!-- text size adjustment -->
+         <!-- <button onClick="changeTextSize('increase)" class="btn btn-primary ms-2">A+</button>
+         <button onClick="changeTextSize('decrease)" class="btn btn-primary ms-1">A-</button> -->
+    </div>
 
     <section id="contact" class="contact section">
         <div class="mx-2 position-relative" data-aos="fade-up" data-aos-delay="100">
             <div class="container">
-                <span>Welcome, <?php echo $voter['first_name']; ?> <?php echo $voter['last_name']; ?></span>
+                <span><?php echo $translations['welcome']; ?>, <?php echo $voter['first_name']; ?> <?php echo $voter['last_name']; ?>. </span>
+                <span><?php echo $translations['voting_instructions']; ?>.</span>
                 <a href="logout.php" class="btn btn-warning" style="margin-left: 150px;">Logout</a>
             </div>
         </div>    
     </section>
-    <div class="container">
+    <div class="container d-flex">
         <div class="align-items-center justify-content-center py-4">
                 <div class="row my-4">
                     <div class="col-md-4">
@@ -95,7 +137,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                             </div>
                             <div class="card-body">                        
                             
-                                <p><strong>Name:</strong><?php echo $voter['first_name']. ' '. $voter['last_name']; ?></p>
+                                <p><strong>Name:</strong> <?php echo $voter['first_name']. ' '. $voter['last_name']; ?></p>
                                 <p><strong>Email:</strong> <?php echo $voter['email']; ?></p>
                                 <p><strong>Voter ID:</strong> <?php echo $voter['admno']; ?></p>
                             </div>
@@ -151,9 +193,9 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
                         
                     </div>
                 </div>            
-                <div class="row my-4">
+                <div class="row ">
                     <div class="col-md-6">
-                    <div class="card">
+                    <div class="card my-4">
                 <div class="card-header bg-secondary text-white">
                     <h5 class="card-title mb-0">Voting History</h5>
                 </div>
@@ -184,7 +226,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
             </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card my-4">
                             <div class="card-header bg-danger text-white">
                                 <h5 class="card-title mb-0">Need Help?</h5>
                             </div>
@@ -224,6 +266,33 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
+        
+        // js for mltilingual
+        function changeLanguage(){
+            const lang = document.getElementById('language-selector').value;
+            window.location.href = '?lang=' + lang;
+        }
+        // js for high contrast
+        function toggleHighContrast(){
+            document.body.classList.toggle('high-contrast');
+        }
+
+        // js for textsize adjstment
+
+        // function changeTextSize(action){
+        //     let currentSize = parseInt(getComputedStyle(document.body).fontSize);
+        //     if(action == 'increase'){
+        //         currentSize +=2;
+        //     }else if(action === 'decrease'){
+        //         currentSize -=2;
+        //     }
+        //     document.body.style.fontSize = currentSize + 'px';
+        //     document.cookie = "textSize" + currentSize + "px; path=/"
+
+        // }   
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
             let currentSectionIndex = 0;
 
@@ -295,81 +364,6 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
            
         });   
         
-        // fetching winners
-        document.addEventListener('DOMContentLoaded', function() {
-    function fetchWinners() {
-        fetch('fetch_winners.php')
-            .then(response => response.json())
-            .then(data => renderWinners(data))
-            .catch(error => console.error('Error fetching winners:', error));
-    }
-
-    function renderWinners(winners) {
-        const resultsContainer = document.getElementById('live-results-winners');
-        resultsContainer.innerHTML = ''; // Clear previous results
-
-        // Create a single canvas element for the combined chart
-        const canvas = document.createElement('canvas');
-        canvas.id = 'combined-chart';
-        resultsContainer.appendChild(canvas);
-
-        const ctx = canvas.getContext('2d');
-
-        // Prepare the data for the combined bar chart
-        const positions = [];
-        const candidateNames = [];
-        const voteCounts = [];
-
-        for (const position in winners) {
-            if (winners.hasOwnProperty(position)) {
-                positions.push(position.replace(/_/g, ' '));
-                candidateNames.push(winners[position].candidateName);
-                voteCounts.push(winners[position].vote_count);
-            }
-        }
-
-        // Generate a combined bar chart
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: positions,
-                datasets: [{
-                    label: 'Vote Count',
-                    data: voteCounts,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0 // Ensure no decimal points for vote count
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${candidateNames[context.dataIndex]}: ${context.raw} votes`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    fetchWinners();
-    setInterval(fetchWinners, 10000); // Refresh every 10 seconds
-    });
-
             // countdown timer
 
             document.addEventListener('DOMContentLoaded', function() {
@@ -413,8 +407,7 @@ $positions = mysqli_query($conn, "SELECT * FROM positionstable");
             setTimeout(() => {
                 cardFooter.style.animation = 'none';
             }, 300000); // Stops the animation after 300 seconds
-        });
-
+        });        
 </script>
 
 </body>

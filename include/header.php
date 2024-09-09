@@ -1,5 +1,6 @@
 
-<title>Heroes TVC EVS</title>
+
+<title><?php echo $translations['dashboard_title']; ?></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -18,7 +19,7 @@
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <!-- <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet"> -->
 
   <!-- Template Main CSS File -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">

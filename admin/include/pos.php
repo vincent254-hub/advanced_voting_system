@@ -16,7 +16,7 @@ if (mysqli_num_rows($result)<1){
 if (isset($_POST['Submit']))
 {
 
-$newPosition = addslashes( $_POST['position'] );
+$newPosition = addslashes( $_POST['position_name'] );
 
     $sql = mysqli_query($conn, "INSERT INTO positionstable (position_name) VALUES ('$newPosition')");
 
